@@ -1,1093 +1,381 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quant Hill — Управление активами с точностью алгоритма</title>
-<meta name="description" content="Quant Hill — количественные алгоритмические стратегии управления активами: анализ, автоматизация, контроль рисков.">
-<meta name="theme-color" content="#0047AB">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Quant Hill — Управление активами с точностью алгоритма">
-<meta property="og:description" content="Количественные торговые стратегии, проверенные 12 годами данных, — от фондового рынка США до цифровых активов.">
-<meta property="og:locale" content="ru_RU">
-<meta property="og:site_name" content="Quant Hill">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 49'%3E%3Cpath d='M18.4 48.2h19.6v-7.1H18.4z' fill='%230047AB'/%3E%3Cpath d='M0 19.7C0 8.6 8.7 0 19.6 0s19.7 8.6 19.7 19.7-8.8 19.6-19.7 19.6S0 30.7 0 19.7Zm31.8 0c0-7.3-5.3-12.5-12.2-12.5S7.4 12.4 7.4 19.7s5.4 12.3 12.2 12.3 12.2-5.1 12.2-12.3Z' fill='%231D1D1B'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --cobalt:#0047AB;
-  --cobalt-deep:#00357f;
-  --cobalt-soft:#3D74C8;
-  --ink:#1D1D1B;
-  --paper:#FFFFFF;
-  --mist:#F3F6FB;
-  --tint:#E7EEF9;
-  --line:rgba(29,29,27,.10);
-  --font-d:'Unbounded',sans-serif;
-  --font-b:'Golos Text',sans-serif;
-  --ease:cubic-bezier(.22,1,.36,1);
-  --sect:clamp(96px,12vw,176px);
-  --gut:clamp(20px,4.5vw,72px);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  font-family:var(--font-b);
-  color:var(--ink);
-  background:var(--paper);
-  font-size:17px;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-::selection{background:var(--cobalt);color:#fff}
-a{color:inherit;text-decoration:none}
-:focus{outline:none}
-:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px;border-radius:4px}
-.skip{
-  position:fixed;top:10px;left:10px;z-index:10001;background:var(--cobalt);color:#fff;
-  padding:12px 20px;border-radius:8px;font-weight:600;transform:translateY(-200%);transition:transform .2s;
-}
-.skip:focus-visible{transform:none}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-ul{list-style:none}
-img{max-width:100%;display:block}
-.container{max-width:1440px;margin:0 auto;padding:0 var(--gut)}
-
-/* ---------- noise overlay ---------- */
-body::after{
-  content:"";position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ---------- preloader ---------- */
-#loader{
-  position:fixed;inset:0;z-index:10000;background:var(--ink);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:28px;
-  transition:transform .9s cubic-bezier(.76,0,.24,1);
-}
-#loader.done{transform:translateY(-100%)}
-#loader .q{width:64px;height:64px;animation:qpulse 1.4s ease-in-out infinite}
-@keyframes qpulse{0%,100%{opacity:.55;transform:scale(.96)}50%{opacity:1;transform:scale(1)}}
-#loader .pct{font-family:var(--font-d);font-weight:300;font-size:13px;letter-spacing:.35em;color:rgba(255,255,255,.6)}
-
-/* ---------- header ---------- */
-header{
-  position:fixed;top:0;left:0;right:0;z-index:1000;
-  transition:background .4s,box-shadow .4s,transform .5s;
-}
-header.scrolled{
-  background:rgba(255,255,255,.82);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  box-shadow:0 1px 0 var(--line);
-}
-header.hidden{transform:translateY(-100%)}
-.hwrap{display:flex;align-items:center;justify-content:space-between;height:84px}
-.logo svg{height:38px;width:auto;display:block}
-.li{fill:var(--ink);transition:fill .4s}
-.la{fill:var(--cobalt);transition:fill .4s}
-nav.main{display:flex;gap:34px}
-nav.main a{
-  font-size:14.5px;font-weight:500;letter-spacing:.01em;position:relative;padding:6px 0;
-}
-nav.main a::after{
-  content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;
-  background:var(--cobalt);transform:scaleX(0);transform-origin:right;
-  transition:transform .35s cubic-bezier(.65,0,.35,1);
-}
-nav.main a:hover::after{transform:scaleX(1);transform-origin:left}
-.hright{display:flex;align-items:center;gap:22px}
-.lang{font-size:13px;font-weight:600;letter-spacing:.08em;color:rgba(29,29,27,.45)}
-.lang b{color:var(--ink)}
-.btn{
-  display:inline-flex;align-items:center;gap:12px;
-  font-family:var(--font-b);font-weight:600;font-size:15px;letter-spacing:.01em;
-  padding:15px 30px;border-radius:100px;border:1px solid var(--ink);
-  background:var(--ink);color:#fff;cursor:pointer;
-  position:relative;overflow:hidden;transition:color .4s,border-color .4s;
-}
-.btn span{position:relative;z-index:1}
-.btn::before{
-  content:"";position:absolute;inset:0;background:var(--cobalt);
-  transform:translateY(101%);transition:transform .45s cubic-bezier(.65,0,.35,1);border-radius:inherit;
-}
-.btn:hover::before{transform:translateY(0)}
-.btn:hover{border-color:var(--cobalt)}
-.btn.ghost{background:transparent;color:var(--ink)}
-.btn.ghost:hover{color:#fff}
-.btn.sm{padding:12px 22px;font-size:13.5px;min-height:44px}
-/* burger + mobile nav */
-.burger{
-  display:none;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);
-  flex-direction:column;align-items:center;justify-content:center;gap:5px;flex:none;
-  transition:background .3s,border-color .3s;position:relative;z-index:1300;
-}
-.burger span{display:block;width:18px;height:2px;background:var(--ink);transition:transform .35s var(--ease),opacity .25s}
-.burger.x span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.burger.x span:nth-child(2){opacity:0}
-.burger.x span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mnav{
-  position:fixed;inset:0;z-index:1200;background:var(--ink);color:#fff;
-  display:flex;flex-direction:column;justify-content:center;padding:0 var(--gut);
-  clip-path:inset(0 0 100% 0);transition:clip-path .55s var(--ease);visibility:hidden;
-}
-.mnav.open{clip-path:inset(0 0 0 0);visibility:visible}
-.mnav a.mlink{
-  font-family:var(--font-d);font-weight:500;font-size:clamp(28px,8vw,44px);
-  padding:14px 0;border-bottom:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;align-items:center;
-  opacity:0;transform:translateY(22px);transition:opacity .5s var(--ease),transform .5s var(--ease);
-}
-.mnav a.mlink small{font-family:var(--font-b);font-size:13px;color:var(--cobalt-soft);font-weight:600}
-.mnav.open a.mlink{opacity:1;transform:none}
-.mnav.open a.mlink:nth-child(1){transition-delay:.12s}
-.mnav.open a.mlink:nth-child(2){transition-delay:.18s}
-.mnav.open a.mlink:nth-child(3){transition-delay:.24s}
-.mnav.open a.mlink:nth-child(4){transition-delay:.3s}
-.mnav.open a.mlink:nth-child(5){transition-delay:.36s}
-.mnav .mfoot{margin-top:36px;display:flex;flex-wrap:wrap;gap:18px;color:rgba(255,255,255,.7);font-size:15px;
-  opacity:0;transition:opacity .5s ease .45s}
-.mnav.open .mfoot{opacity:1}
-body.lock{overflow:hidden}
-body.lock header{z-index:1300;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
-body.lock .logo .li{fill:#fff}
-body.lock .burger{border-color:rgba(255,255,255,.3)}
-body.lock .burger span{background:#fff}
-body.lock .lang{color:rgba(255,255,255,.55)}
-body.lock .lang b{color:#fff}
-body.lock .hright .btn{visibility:hidden}
-section[id]{scroll-margin-top:92px}
-
-/* ---------- hero ---------- */
-.hero{
-  position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-start;
-  padding-top:clamp(150px,18vh,210px);overflow:hidden;
-}
-#flow{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-.hero::before{
-  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:
-    radial-gradient(1100px 520px at 78% 18%, rgba(0,71,171,.10), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.25) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,.92) 88%);
-}
-.hero .hairlines{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:repeating-linear-gradient(90deg,rgba(29,29,27,.045) 0 1px,transparent 1px calc(100%/6));
-  mask-image:linear-gradient(180deg,transparent,#000 18%,#000 78%,transparent);
-  -webkit-mask-image:linear-gradient(180deg,transparent,#000 18%,#000 78%,transparent);
-}
-.hero .container{position:relative;z-index:2;padding-bottom:64px}
-.eyebrow{
-  display:inline-flex;align-items:center;gap:12px;
-  font-size:12.5px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--cobalt);
-  margin-bottom:34px;
-}
-.eyebrow::before{content:"";width:34px;height:1.5px;background:var(--cobalt)}
-h1{
-  font-family:var(--font-d);font-weight:500;
-  font-size:clamp(26px,3.2vw,50px);
-  line-height:1.12;letter-spacing:-.01em;
-  max-width:21ch;
-}
-h1 .accent{color:var(--cobalt)}
-h1 .w{display:inline-block;overflow:hidden;vertical-align:bottom}
-h1 .w i{display:inline-block;font-style:normal;transform:translateY(110%);transition:transform .9s cubic-bezier(.22,1,.36,1)}
-body.ready h1 .w i{transform:translateY(0)}
-.hero-sub{
-  max-width:480px;font-size:clamp(16px,1.25vw,19px);line-height:1.55;color:rgba(29,29,27,.72);
-  margin:22px 0 34px;
-  opacity:0;transform:translateY(24px);transition:opacity .8s ease .55s,transform .8s ease .55s;
-}
-body.ready .hero-sub{opacity:1;transform:none}
-.hero-cta{display:flex;gap:16px;flex-wrap:wrap;
-  opacity:0;transform:translateY(24px);transition:opacity .8s ease .75s,transform .8s ease .75s;}
-body.ready .hero-cta{opacity:1;transform:none}
-.hero-grid{display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
-.hero-copy{position:relative}
-.hero-note{
-  display:inline-flex;align-items:center;gap:12px;flex:none;
-  border:1px solid var(--line);border-radius:100px;padding:13px 20px;
-  font-size:13px;color:rgba(29,29,27,.7);background:rgba(255,255,255,.65);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  opacity:0;transform:translateY(24px);transition:opacity .8s ease .95s,transform .8s ease .95s;
-}
-body.ready .hero-note{opacity:1;transform:none}
-.hero-note .live{width:8px;height:8px;border-radius:50%;background:var(--cobalt);flex:none;animation:pulse 2.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,71,171,.45);opacity:1}50%{box-shadow:0 0 0 7px rgba(0,71,171,0);opacity:.7}}
-@media(max-width:1080px){.hero-grid{flex-direction:column;align-items:flex-start}.hero-note{order:-1}}
-
-/* hero stats bar */
-.stats{
-  position:relative;z-index:2;border-top:1px solid var(--line);margin-top:auto;
-  background:rgba(255,255,255,.6);backdrop-filter:blur(8px);
-}
-.stats .container{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  padding-top:0;padding-bottom:0;
-}
-.stat{
-  padding:30px clamp(8px,2vw,36px) 34px 0;border-right:1px solid var(--line);
-  opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;
-}
-.stat:last-child{border-right:0}
-.stat+.stat{padding-left:clamp(16px,2.5vw,36px)}
-body.ready .stat{opacity:1;transform:none}
-body.ready .stat:nth-child(1){transition-delay:.9s}
-body.ready .stat:nth-child(2){transition-delay:1.02s}
-body.ready .stat:nth-child(3){transition-delay:1.14s}
-body.ready .stat:nth-child(4){transition-delay:1.26s}
-.stat .num{
-  font-family:var(--font-d);font-weight:500;font-size:clamp(26px,2.6vw,40px);
-  color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums;
-}
-.stat .num em{font-style:normal;color:var(--cobalt)}
-.stat .lbl{font-size:13.5px;color:rgba(29,29,27,.66);margin-top:8px;line-height:1.45}
-
-/* ---------- marquee ---------- */
-.marquee{
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  overflow:hidden;padding:26px 0;background:var(--paper);
-}
-.mq-track{display:flex;gap:64px;width:max-content;animation:mq 36s linear infinite}
-.marquee:hover .mq-track{animation-play-state:paused}
-@keyframes mq{to{transform:translateX(-50%)}}
-.mq-item{
-  font-family:var(--font-d);font-weight:400;font-size:15px;letter-spacing:.22em;
-  color:rgba(29,29,27,.38);white-space:nowrap;display:flex;align-items:center;gap:64px;
-}
-.mq-item::after{content:"·";color:var(--cobalt);opacity:.6}
-
-/* ---------- generic section ---------- */
-section{position:relative}
-.sect-pad{padding:var(--sect) 0}
-.sect-head{margin-bottom:clamp(48px,6vw,88px)}
-h2{
-  font-family:var(--font-d);font-weight:500;
-  font-size:clamp(30px,4.2vw,62px);line-height:1.08;letter-spacing:-.01em;max-width:18ch;
-}
-h2 .accent{color:var(--cobalt)}
-.sect-sub{max-width:560px;font-size:18px;color:rgba(29,29,27,.68);margin-top:24px}
-
-/* reveal */
-.rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.rv.vis{opacity:1;transform:none}
-
-/* ---------- approach cards ---------- */
-.approach{background:var(--paper)}
-.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-.card{
-  background:var(--paper);padding:clamp(28px,2.6vw,44px);min-height:340px;
-  display:flex;flex-direction:column;justify-content:flex-start;gap:40px;
-  position:relative;overflow:hidden;transition:background .5s;
-}
-.card::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--cobalt);
-  transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.65,0,.35,1);
-}
-.card:hover::after{transform:scaleX(1)}
-.card:hover{background:var(--mist)}
-.card .n{
-  font-family:var(--font-d);font-weight:300;font-size:clamp(44px,4vw,64px);line-height:1;
-  color:transparent;-webkit-text-stroke:1.5px rgba(0,71,171,.45);transition:color .5s,-webkit-text-stroke-color .5s;
-}
-.card:hover .n{color:var(--cobalt);-webkit-text-stroke-color:var(--cobalt)}
-.card h3{font-family:var(--font-d);font-weight:500;font-size:19px;line-height:1.3;margin-bottom:12px}
-.card p{font-size:15.5px;color:rgba(29,29,27,.7);line-height:1.55}
-
-/* ---------- twelve ---------- */
-.twelve{background:var(--ink);color:#fff;overflow:hidden}
-.twelve .container{display:grid;grid-template-columns:auto 1fr;gap:clamp(32px,6vw,110px);align-items:center}
-.twelve .big{
-  font-family:var(--font-d);font-weight:600;
-  font-size:clamp(140px,24vw,360px);line-height:.9;letter-spacing:-.03em;
-  color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.85);
-  position:relative;white-space:nowrap;
-}
-.twelve .big b{
-  position:absolute;inset:0;color:var(--cobalt-soft);-webkit-text-stroke:0;font-weight:600;
-  clip-path:inset(100% 0 0 0);transition:clip-path 1.6s cubic-bezier(.65,0,.35,1);
-}
-.twelve.vis .big b{clip-path:inset(0 0 0 0)}
-.twelve .yr{font-family:var(--font-d);font-weight:400;font-size:clamp(20px,2vw,30px);color:rgba(255,255,255,.7);margin-top:18px;letter-spacing:.2em;text-transform:uppercase}
-.twelve p{font-size:clamp(18px,1.7vw,24px);line-height:1.55;color:rgba(255,255,255,.78);max-width:30ch}
-.twelve p strong{color:#fff;font-weight:600}
-
-/* ---------- infrastructure ---------- */
-.infra{background:var(--mist)}
-.infra .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,96px);align-items:start}
-.infra .sticky{position:sticky;top:120px}
-.inf-list{display:flex;flex-direction:column}
-.inf-item{
-  border-top:1px solid var(--line);padding:30px 0;cursor:pointer;transition:padding .4s;
-}
-.inf-item:last-child{border-bottom:1px solid var(--line)}
-.inf-item .row{display:flex;align-items:baseline;gap:24px;width:100%;text-align:left;padding:4px 0;min-height:44px}
-.inf-item .idx{font-family:var(--font-d);font-weight:300;font-size:14px;color:var(--cobalt);min-width:34px}
-.inf-item h3,.inf-item .h3t{font-family:var(--font-d);font-weight:500;font-size:clamp(17px,1.5vw,21px);flex:1;transition:color .3s;text-align:left}
-.inf-item .plus{
-  width:30px;height:30px;border-radius:50%;border:1px solid var(--line);flex:none;position:relative;transition:background .35s,border-color .35s,transform .45s;
-}
-.inf-item .plus::before,.inf-item .plus::after{
-  content:"";position:absolute;top:50%;left:50%;background:var(--ink);transition:background .35s;
-  width:11px;height:1.5px;transform:translate(-50%,-50%);
-}
-.inf-item .plus::after{transform:translate(-50%,-50%) rotate(90deg)}
-.inf-item.open .plus{background:var(--cobalt);border-color:var(--cobalt);transform:rotate(45deg)}
-.inf-item.open .plus::before,.inf-item.open .plus::after{background:#fff}
-.inf-item .body{
-  max-height:0;overflow:hidden;transition:max-height .55s cubic-bezier(.65,0,.35,1);
-}
-.inf-item .body p{padding:18px 0 6px 58px;color:rgba(29,29,27,.7);font-size:15.5px;max-width:46ch}
-.inf-item.open h3,.inf-item.open .h3t{color:var(--cobalt)}
-.inf-visual{
-  position:relative;border-radius:20px;overflow:hidden;background:var(--ink);
-  aspect-ratio:4/4.6;
-}
-#bars{position:absolute;inset:0;width:100%;height:100%}
-.inf-visual .tag{
-  position:absolute;left:24px;bottom:22px;z-index:2;
-  font-family:var(--font-d);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.55);
-}
-
-/* ---------- strategies ---------- */
-.strat{background:var(--paper)}
-.strat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px)}
-.s-card{
-  border:1px solid var(--line);border-radius:20px;padding:clamp(26px,2.4vw,38px);
-  display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;
-  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s,border-color .5s;
-  background:var(--paper);
-}
-.s-card:hover{transform:translateY(-8px);box-shadow:0 32px 64px -28px rgba(0,53,127,.25);border-color:rgba(0,71,171,.35)}
-.s-card.flag{background:linear-gradient(160deg,var(--cobalt) 0%,var(--cobalt-deep) 100%);color:#fff;border-color:transparent}
-.s-tag{
-  align-self:flex-start;font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
-  padding:7px 14px;border-radius:100px;border:1px solid rgba(0,71,171,.3);color:var(--cobalt);margin-bottom:28px;
-}
-.s-card.flag .s-tag{border-color:rgba(255,255,255,.4);color:#fff}
-.s-card h3{font-family:var(--font-d);font-weight:500;font-size:clamp(20px,1.8vw,26px);margin-bottom:14px}
-.s-card p{font-size:15.5px;line-height:1.55;color:rgba(29,29,27,.7);margin-bottom:30px}
-.s-card.flag p{color:rgba(255,255,255,.75)}
-.s-chart{margin-top:auto;margin-bottom:26px}
-.s-chart svg{width:100%;height:84px;display:block;overflow:visible}
-.s-chart path{fill:none;stroke:var(--cobalt);stroke-width:2.5;stroke-linecap:round;
-  stroke-dasharray:340;stroke-dashoffset:340;transition:stroke-dashoffset 2.2s cubic-bezier(.65,0,.35,1)}
-.s-card.flag .s-chart path{stroke:#fff}
-.s-chart .area{fill:url(#gradBlue);stroke:none;opacity:0;transition:opacity 1.4s ease .8s}
-.s-card.flag .s-chart .area{fill:url(#gradWhite)}
-.vis .s-chart path{stroke-dashoffset:0}
-.vis .s-chart .area{opacity:1}
-.s-meta{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
-.s-meta .val{font-family:var(--font-d);font-weight:500;font-size:clamp(24px,2.2vw,34px);line-height:1}
-.s-meta .cap{font-size:12.5px;color:rgba(29,29,27,.62);margin-top:6px}
-.s-card.flag .s-meta .cap{color:rgba(255,255,255,.6)}
-.s-link{
-  width:48px;height:48px;border-radius:50%;border:1px solid var(--line);flex:none;
-  display:flex;align-items:center;justify-content:center;transition:background .35s,border-color .35s,transform .35s;
-}
-.s-link svg{width:17px;height:17px;stroke:currentColor;transition:transform .35s}
-.s-card:hover .s-link{background:var(--cobalt);border-color:var(--cobalt);color:#fff}
-.s-card.flag .s-link{border-color:rgba(255,255,255,.4);color:#fff}
-.s-card.flag:hover .s-link{background:#fff;color:var(--cobalt)}
-.s-card:hover .s-link svg{transform:translate(2px,-2px)}
-
-/* ---------- team ---------- */
-.team{background:var(--mist)}
-.team .grid{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(40px,6vw,96px);align-items:center}
-.photo{
-  position:relative;border-radius:20px;overflow:hidden;aspect-ratio:832/1040;background:linear-gradient(155deg,#dfe9f8 0%,#b9cdec 55%,#7fa3d8 100%);
-}
-.photo img{width:100%;height:100%;object-fit:cover;display:block;
-  transform:scale(1.06);transition:transform 1.4s var(--ease)}
-.photo.vis img{transform:scale(1)}
-.photo .frame{position:absolute;inset:18px;border:1px solid rgba(255,255,255,.5);border-radius:12px;pointer-events:none}
-.quote{
-  font-family:var(--font-d);font-weight:400;font-size:clamp(20px,2vw,30px);line-height:1.4;letter-spacing:-.005em;
-}
-.quote .accent{color:var(--cobalt)}
-.team .who{margin-top:34px;display:flex;align-items:center;gap:18px}
-.team .who .ava{width:56px;height:56px;border-radius:50%;background:var(--tint);overflow:hidden;flex:none}
-.team .who .ava img{width:100%;height:100%;object-fit:cover;display:block}
-.team .who .nm{font-weight:600;font-size:16px}
-.team .who .rl{font-size:13.5px;color:rgba(29,29,27,.62)}
-.team .desc{margin-top:30px;color:rgba(29,29,27,.68);max-width:50ch}
-
-/* ---------- cta ---------- */
-.cta{background:var(--ink);color:#fff;overflow:hidden;position:relative}
-.cta::before{
-  content:"";position:absolute;width:900px;height:900px;border-radius:50%;
-  background:radial-gradient(circle,rgba(0,71,171,.5),transparent 65%);
-  top:-340px;right:-240px;filter:blur(10px);
-}
-.cta .container{position:relative;display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(40px,6vw,96px);align-items:center}
-.cta h2{color:#fff;max-width:14ch}
-.cta .btn{background:#fff;color:var(--ink);border-color:#fff}
-.cta .btn:hover{color:#fff}
-.cta .contacts{display:flex;flex-direction:column;gap:18px;font-size:17px}
-.cta .contacts a{display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.8);transition:color .3s}
-.cta .contacts a:hover{color:#fff}
-.cta .contacts .ic{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;flex:none}
-.cta .contacts .ic svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
-
-/* ---------- footer ---------- */
-footer{background:var(--ink);color:rgba(255,255,255,.65);border-top:1px solid rgba(255,255,255,.1)}
-footer .top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding:64px 0 48px}
-footer .li{fill:#fff}
-footer .la{fill:var(--cobalt-soft)}
-footer .logo svg{height:34px}
-footer nav{display:flex;gap:28px;flex-wrap:wrap}
-footer nav a{font-size:14.5px;transition:color .3s}
-footer nav a:hover{color:#fff}
-footer .legal{
-  border-top:1px solid rgba(255,255,255,.1);padding:28px 0 40px;
-  font-size:12.5px;line-height:1.6;color:rgba(255,255,255,.4);
-  display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
-}
-footer .legal p{max-width:760px}
-
-/* ---------- responsive ---------- */
-@media(max-width:1080px){
-  .cards4{grid-template-columns:repeat(2,1fr)}
-  .card{min-height:260px}
-  nav.main{display:none}
-  .burger{display:flex}
-  .strat-grid{grid-template-columns:1fr;max-width:560px}
-  .infra .grid,.team .grid,.cta .container{grid-template-columns:1fr}
-  .infra .sticky{position:static}
-  .inf-visual{aspect-ratio:16/10}
-  .photo{aspect-ratio:16/11}
-  .twelve .container{grid-template-columns:1fr;gap:24px}
-}
-@media(max-width:680px){
-  .stats .container{grid-template-columns:1fr 1fr}
-  .stat{border-right:0;border-bottom:1px solid var(--line);padding-left:0!important;padding-top:22px;padding-bottom:24px}
-  .stat:nth-last-child(-n+2){border-bottom:0}
-  .cards4{grid-template-columns:1fr}
-  .card{min-height:0;gap:24px}
-  .hwrap{height:72px}
-  .hright .btn{display:none}
-  .lang{display:none}
-  .hero{padding-top:110px}
-  .hero-cta .btn{width:100%;justify-content:center}
-  .twelve .yr{margin-top:6px}
-  .s-card{border-radius:16px}
-  .cta .contacts a{min-height:48px}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-}
-</style>
+<!-- saved from url=(0044)https://quanthill-institutional.netlify.app/ -->
+<html lang="ru" class="site-auth-pending"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Quant Hill — количественные алгоритмические стратегии для мировых фондовых и цифровых рынков. Автоматизированное исполнение, отдельные счета и контролируемый риск.">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:title" content="Quant Hill — системное управление капиталом">
+  <meta property="og:description" content="Системное управление активами: данные, автоматизация и риск, заданный до первой сделки.">
+  <meta property="og:type" content="website">
+  <title>Quant Hill — системное управление капиталом</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./accets/css2" rel="stylesheet">
+  <link rel="stylesheet" href="./accets/institutional.css?v=20260727-dropdown-2">
+  <script src="./accets/nav-dropdown.js?v=20260727-3" defer></script>
+  <script src="./accets/script.js?v=20260726-a11y-2" defer></script>
+  <script src="./accets/index-video.js?v=20260723-1" defer></script>
+  <link rel="stylesheet" href="./accets/site-auth.css?v=20260729-2">
+  <script src="./accets/site-auth.js?v=20260729-2"></script>
 </head>
 <body>
-<a class="skip" href="#main">Перейти к содержанию</a>
-<!-- preloader -->
-<div id="loader" aria-hidden="true">
-  <svg class="q" viewBox="0 0 40 49" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18.4182 48.167L38.0194 48.176V41.032H18.4182V48.167Z" fill="#3D74C8"/>
-    <path d="M0 19.666C0 8.585 8.696 0 19.61 0C30.525 0 39.276 8.585 39.276 19.666C39.276 30.747 30.525 39.323 19.61 39.323C8.696 39.323 0 30.682 0 19.666ZM31.819 19.666C31.819 12.374 26.468 7.245 19.61 7.245C12.753 7.245 7.402 12.374 7.402 19.666C7.402 26.958 12.753 32.031 19.61 32.031C26.468 32.031 31.819 26.902 31.819 19.666Z" fill="#fff"/>
-  </svg>
-  <div class="pct" id="pct">0%</div>
-</div>
+  <a class="skip" href="https://quanthill-institutional.netlify.app/#main">К содержанию</a>
+  <div class="progress" aria-hidden="true"><i style="width: 16.6223%;"></i></div>
 
-<!-- header -->
-<header id="header">
-  <div class="container hwrap">
-    <a class="logo" href="#" aria-label="Quant Hill">
-      <svg viewBox="0 0 241 63" xmlns="http://www.w3.org/2000/svg">
-        <g id="qhlogo">
-        <path class="li" d="M102.193 26.3291V53.3327H95.2246V50.1444C93.2838 52.5749 90.3635 54.0905 86.4266 54.0905C79.246 54.0905 73.3037 47.8803 73.3037 39.8309C73.3037 31.7815 79.246 25.5713 86.4266 25.5713C90.3728 25.5713 93.2838 27.0869 95.2246 29.5174V26.3291H102.193ZM95.2246 39.8309C95.2246 35.2933 92.0362 32.2159 87.7205 32.2159C83.4047 32.2159 80.2718 35.2933 80.2718 39.8309C80.2718 44.3685 83.4601 47.4459 87.7205 47.4459C91.9808 47.4459 95.2246 44.3685 95.2246 39.8309Z"/>
-        <path class="la" d="M191.715 43.1671V51.3643C191.715 53.4067 193.369 55.0609 195.412 55.0609C197.454 55.0609 199.108 53.4067 199.108 51.3643V43.1671C199.108 41.1247 197.454 39.4705 195.412 39.4705C193.369 39.4705 191.715 41.1247 191.715 43.1671Z"/>
-        <path class="li" d="M199.117 37.6776V15.5257H191.715V30.5339H177.677V15.5257H170.219V53.3235H177.677V37.6684L199.117 37.6776Z"/>
-        <path class="la" d="M18.4182 62.9347L38.0194 62.9439V55.8002H18.4182V62.9347Z"/>
-        <path class="li" d="M0 34.4339C0 23.3533 8.69626 14.7679 19.6105 14.7679C30.5247 14.7679 39.2764 23.3533 39.2764 34.4339C39.2764 45.5144 30.5247 54.0905 19.6105 54.0905C8.69626 54.0905 0 45.4497 0 34.4339ZM31.8185 34.4339C31.8185 27.1423 26.4677 22.0133 19.6105 22.0133C12.7533 22.0133 7.40245 27.1423 7.40245 34.4339C7.40245 41.7254 12.7533 46.799 19.6105 46.799C26.4677 46.799 31.8185 41.67 31.8185 34.4339Z"/>
-        <path class="li" d="M61.798 26.366V42.0304C61.798 44.5071 60.8368 47.4551 56.2531 47.4551C51.6693 47.4551 50.7082 44.5071 50.7082 42.0304V26.366H43.6938V41.8178C43.6938 49.1371 48.7397 54.0536 56.2623 54.0536C63.7849 54.0536 68.877 49.1371 68.877 41.8178V26.366H61.798Z"/>
-        <path class="li" d="M115.131 53.2865V37.6222C115.131 35.1455 116.092 32.1974 120.676 32.1974C125.259 32.1974 126.221 35.1455 126.221 37.6222V53.2865H133.235V37.8347C133.235 30.5155 128.189 25.599 120.666 25.599C113.144 25.599 108.052 30.5155 108.052 37.8347V53.2865H115.131Z"/>
-        <path class="li" d="M154.536 33.0199V26.3198H145.055V15.4795H137.994V41.3095C137.994 48.5826 142.994 53.4806 150.452 53.5453C150.507 53.5453 148.659 53.5453 154.509 53.5453V46.9468C148.64 46.9468 150.479 46.9468 150.405 46.9468C145.997 46.8637 145.064 43.9618 145.064 41.5221V33.0199H154.546H154.536Z"/>
-        <path class="la" d="M209.376 24.8134C207.333 24.8134 205.679 26.4677 205.679 28.5101V37.2895C205.679 39.3319 207.333 40.9861 209.376 40.9861C211.418 40.9861 213.072 39.3319 213.072 37.2895V28.5101C213.072 26.4677 211.418 24.8134 209.376 24.8134Z"/>
-        <path class="la" d="M223.339 13.4094C221.297 13.4094 219.643 15.0637 219.643 17.106V25.8855C219.643 27.9278 221.297 29.5821 223.339 29.5821C225.382 29.5821 227.036 27.9278 227.036 25.8855V17.106C227.036 15.0637 225.382 13.4094 223.339 13.4094Z"/>
-        <path class="la" d="M237.303 0C235.261 0 233.607 1.65423 233.607 3.6966V12.476C233.607 14.5184 235.261 16.1726 237.303 16.1726C239.346 16.1726 241 14.5184 241 12.476V3.6966C241 1.65423 239.346 0 237.303 0Z"/>
-        <path class="li" d="M209.376 41.633C207.805 41.633 206.437 40.7828 205.679 39.5259V51.3643C205.679 53.4067 207.333 55.0609 209.376 55.0609C211.418 55.0609 213.072 53.4067 213.072 51.3643V39.5259C212.314 40.7828 210.947 41.633 209.376 41.633Z"/>
-        <path class="li" d="M223.339 30.2197C221.768 30.2197 220.401 29.3695 219.643 28.1127V51.3551C219.643 53.3974 221.297 55.0517 223.339 55.0517C225.382 55.0517 227.036 53.3974 227.036 51.3551V28.1127C226.278 29.3695 224.91 30.2197 223.339 30.2197Z"/>
-        <path class="li" d="M237.303 16.8196C235.732 16.8196 234.364 15.9693 233.607 14.7217V51.3735C233.607 53.4159 235.261 55.0701 237.303 55.0701C239.346 55.0701 241 53.4159 241 51.3735V14.7125C240.242 15.9693 238.874 16.8196 237.303 16.8196Z"/>
-        </g>
-      </svg>
+  <header class="header" data-header="">
+    <a href="#top" class="logo" aria-label="Quant Hill — главная">
+      <img src="./accets/logo-quanthill.svg" width="241" height="63" alt="Quant Hill">
     </a>
-    <nav class="main">
-      <a href="#approach">Подход</a>
-      <a href="#infra">Инфраструктура</a>
-      <a href="#strategies">Стратегии</a>
-      <a href="#team">Команда</a>
-      <a href="#contact">Контакты</a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="./about.html">О компании</a>
+      <div class="nav-dropdown" data-nav-dropdown>
+        <div class="nav-dropdown-label">
+          <a href="./strategies.html">Стратегии</a>
+          <button class="nav-dropdown-toggle" type="button" aria-label="Показать меню раздела «Стратегии»" aria-expanded="false" aria-controls="strategies-submenu" data-nav-dropdown-toggle><i aria-hidden="true"></i></button>
+        </div>
+        <div class="nav-dropdown-menu" id="strategies-submenu" aria-hidden="true" data-nav-dropdown-menu>
+          <a href="./strategies.html"><span><b>Все стратегии</b><small>Обзор и сравнение</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./crypto-trend.html"><span><b>Crypto Trend</b><small>Digital assets · USDT</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./bitcoin-hedge.html"><span><b>Bitcoin Hedge</b><small>Digital assets · BTC</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./us-trend.html"><span><b>US Trend</b><small>US equities · USD</small></span><i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+      <a href="./technologies.html">Технологии</a>
+      <a href="./blog/index.html">Блог и новости</a>
+      <a href="./contacts.html">Контакты</a>
     </nav>
-    <div class="hright">
-      <span class="lang"><b>RU</b> / EN</span>
-      <a class="btn sm" href="#contact"><span>Личный кабинет</span></a>
-      <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mnav">
-        <span></span><span></span><span></span>
-      </button>
+    <div class="head-actions">
+      <a href="https://quanthill.kg/en/" class="lang">EN</a>
+      <a href="#contact" class="contact-link">Личный кабинет</a>
+      <button class="menu" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu=""><i></i><i></i></button>
     </div>
-  </div>
-</header>
+  </header>
 
-<nav class="mnav" id="mnav" aria-label="Мобильное меню">
-  <a class="mlink" href="#approach"><span>Подход</span><small>01</small></a>
-  <a class="mlink" href="#infra"><span>Инфраструктура</span><small>02</small></a>
-  <a class="mlink" href="#strategies"><span>Стратегии</span><small>03</small></a>
-  <a class="mlink" href="#team"><span>Команда</span><small>04</small></a>
-  <a class="mlink" href="#contact"><span>Контакты</span><small>05</small></a>
-  <div class="mfoot">
-    <a href="tel:+996500012680">+996 500 012 680</a>
-    <a href="mailto:info@quanthill.kg">info@quanthill.kg</a>
-    <a href="https://t.me/quanthillpublic">Telegram</a>
-  </div>
-</nav>
-
-<main id="main">
-
-<!-- hero -->
-<section class="hero">
-  <canvas id="flow" aria-hidden="true"></canvas>
-  <div class="hairlines" aria-hidden="true"></div>
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <div class="eyebrow">Управление активами · с 2014 года</div>
-      <h1 id="h1">Алгоритмы находят сигнал там, где другие видят <span class="accent">шум</span></h1>
-      <p class="hero-sub">Количественные торговые стратегии, проверенные двенадцатью годами данных и кризисов, — от фондового рынка США до цифровых активов.</p>
-    </div>
-    <div class="hero-note" aria-hidden="true"><span class="live"></span>Алгоритмы в рынке 24/7 · 3 активные стратегии</div>
-  </div>
-  <div class="stats">
-    <div class="container">
-      <div class="stat"><div class="num"><em data-count="12">0</em> лет</div><div class="lbl">управления собственным и клиентским капиталом</div></div>
-      <div class="stat"><div class="num">$<em data-count="100">0</em>M+</div><div class="lbl">капитал под управлением на пике</div></div>
-      <div class="stat"><div class="num">+<em data-count="35">0</em>%</div><div class="lbl">доходность по всем стратегиям в 2024 году</div></div>
-      <div class="stat"><div class="num"><em data-count="100">0</em>%</div><div class="lbl">сделок исполняется алгоритмами — без участия человека</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- marquee -->
-<div class="marquee" aria-hidden="true">
-  <div class="mq-track" id="mqtrack">
-    <span class="mq-item">CME GROUP</span><span class="mq-item">NYSE</span><span class="mq-item">NASDAQ</span><span class="mq-item">MOEX</span><span class="mq-item">BINANCE</span><span class="mq-item">DERIBIT</span><span class="mq-item">OKX</span><span class="mq-item">BITMEX</span>
-  </div>
-</div>
-
-<!-- approach -->
-<section class="approach sect-pad" id="approach">
-  <div class="container">
-    <div class="sect-head rv">
-      <div class="eyebrow">Наш подход</div>
-      <h2>Решения принимают модели. <span class="accent">Не эмоции.</span></h2>
-    </div>
-    <div class="cards4">
-      <div class="card rv"><div class="n">01</div><div><h3>Количественный анализ</h3><p>Каждая торговая гипотеза проверена на исторических данных — прежде чем рискнуть первым долларом.</p></div></div>
-      <div class="card rv"><div class="n">02</div><div><h3>Полная автоматизация</h3><p>Исполнение сделок автоматизировано на 100%: без усталости, страха и жадности.</p></div></div>
-      <div class="card rv"><div class="n">03</div><div><h3>Контролируемые риски</h3><p>Максимально допустимый убыток определён заранее — ещё до открытия позиции.</p></div></div>
-      <div class="card rv"><div class="n">04</div><div><h3>Всё включено</h3><p>Команда, программное обеспечение и IT-инфраструктура собственной разработки.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- twelve -->
-<section class="twelve sect-pad" id="twelve">
-  <div class="container">
-    <div>
-      <div class="big">12<b>12</b></div>
-      <div class="yr">лет на рынке</div>
-    </div>
-    <p class="rv">Успешного управления <strong>собственными и клиентскими деньгами</strong> на крупнейших мировых площадках — через тренды, кризисы и чёрных лебедей.</p>
-  </div>
-</section>
-
-<!-- infrastructure -->
-<section class="infra sect-pad" id="infra">
-  <div class="container grid">
-    <div class="sticky">
-      <div class="sect-head rv" style="margin-bottom:40px">
-        <div class="eyebrow">Технологии</div>
-        <h2>Инфраструктура, которой нет <span class="accent">у других</span></h2>
-        <p class="sect-sub">Торговая экосистема, полностью разработанная нашей командой, — от исследований и бэктестов до исполнения сделок за миллисекунды.</p>
+  <main id="main">
+    <section class="hero hero-video-page" id="top" aria-labelledby="hero-title">
+      <div class="hero-video" aria-hidden="true">
+        <video data-hero-video-player src="./video/01.mp4" autoplay muted loop playsinline preload="auto"></video>
       </div>
-      <div class="inf-visual rv">
-        <canvas id="bars"></canvas>
-        <div class="tag">Live · Trading Infrastructure</div>
-      </div>
-    </div>
-    <div class="inf-list rv">
-      <div class="inf-item open">
-        <button type="button" class="row" aria-expanded="true" aria-controls="inf1"><span class="idx">01</span><span class="h3t">Собственная торговая платформа</span><span class="plus" aria-hidden="true"></span></button>
-        <div class="body" id="inf1"><p>Уникальная платформа для исследований, бэктестов и боевой торговли. Никаких сторонних «чёрных ящиков» — мы контролируем каждую строку кода.</p></div>
-      </div>
-      <div class="inf-item">
-        <button type="button" class="row" aria-expanded="false" aria-controls="inf2"><span class="idx">02</span><span class="h3t">Распределённая система серверов</span><span class="plus" aria-hidden="true"></span></button>
-        <div class="body" id="inf2"><p>Серверы размещены рядом с биржевыми дата-центрами по всему миру. Отказ одного узла не останавливает торговлю.</p></div>
-      </div>
-      <div class="inf-item">
-        <button type="button" class="row" aria-expanded="false" aria-controls="inf3"><span class="idx">03</span><span class="h3t">Стресс-тестирование под нагрузкой</span><span class="plus" aria-hidden="true"></span></button>
-        <div class="body" id="inf3"><p>Системы регулярно проверяются на экстремальных сценариях рынка — всплески волатильности, разрывы ликвидности, сбои каналов связи.</p></div>
-      </div>
-      <div class="inf-item">
-        <button type="button" class="row" aria-expanded="false" aria-controls="inf4"><span class="idx">04</span><span class="h3t">Многоуровневый контроль рисков</span><span class="plus" aria-hidden="true"></span></button>
-        <div class="body" id="inf4"><p>Независимые контуры риск-менеджмента на уровне позиции, стратегии и портфеля. Лимиты убытка зашиты в код и не подлежат «ручному» пересмотру.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- strategies -->
-<section class="strat sect-pad" id="strategies">
-  <div class="container">
-    <svg width="0" height="0" style="position:absolute">
-      <defs>
-        <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#0047AB" stop-opacity=".22"/>
-          <stop offset="1" stop-color="#0047AB" stop-opacity="0"/>
-        </linearGradient>
-        <linearGradient id="gradWhite" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#ffffff" stop-opacity=".28"/>
-          <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-    </svg>
-    <div class="sect-head rv">
-      <div class="eyebrow">Стратегии</div>
-      <h2>Три стратегии. <span class="accent">Одна дисциплина.</span></h2>
-      <p class="sect-sub">Долгосрочный рост стоимости активов через системную трендовую торговлю. Подключение к счёту клиента по API — активы остаются у вас.</p>
-    </div>
-    <div class="strat-grid">
-      <a class="s-card flag rv" href="https://quanthill.kg/ru/strategii/strategiya-crypto-trend/">
-        <span class="s-tag">Флагман · Crypto</span>
-        <h3>CRYPTO Trend</h3>
-        <p>Флагманская активная трендовая стратегия для рынка цифровых активов. Торгуется с 2018 года.</p>
-        <div class="s-chart"><svg viewBox="0 0 300 84" preserveAspectRatio="none">
-          <path class="area" d="M0,76 L30,70 L60,72 L90,52 L120,58 L150,40 L180,46 L210,26 L240,32 L270,14 L300,8 L300,84 L0,84 Z"/>
-          <path d="M0,76 L30,70 L60,72 L90,52 L120,58 L150,40 L180,46 L210,26 L240,32 L270,14 L300,8"/>
-        </svg></div>
-        <div class="s-meta">
-          <div><div class="val">+31.5%</div><div class="cap">доходность за 2024 год</div></div>
-          <span class="s-link"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-variants" aria-label="Варианты фонового видео в hero-блоке">
+        <span class="hero-variants-label">Видео hero</span>
+        <div class="hero-variants-buttons" role="group" aria-label="Выберите вариант фонового видео">
+          <button class="hero-variant is-active" type="button" data-hero-video="./video/01.mp4" aria-pressed="true" aria-label="Видео v01" title="Видео v01"><b>v01</b></button>
+          <button class="hero-variant" type="button" data-hero-video="./video/02.mp4" aria-pressed="false" aria-label="Видео v02" title="Видео v02"><b>v02</b></button>
+          <button class="hero-variant" type="button" data-hero-video="./video/03.mp4" aria-pressed="false" aria-label="Видео v03" title="Видео v03"><b>v03</b></button>
+          <button class="hero-variant" type="button" data-hero-video="./video/04.mp4" aria-pressed="false" aria-label="Видео v04" title="Видео v04"><b>v04</b></button>
+          <button class="hero-variant" type="button" data-hero-video="./video/05.mp4" aria-pressed="false" aria-label="Видео v05" title="Видео v05"><b>v05</b></button>
         </div>
-      </a>
-      <a class="s-card rv" href="https://quanthill.kg/ru/strategii/strategiya-bitcoin-hadge/">
-        <span class="s-tag">Цифровые активы</span>
-        <h3>Bitcoin Hedge</h3>
-        <p>Активная трендовая стратегия для рынка цифровых активов с защитой капитала в периоды падений.</p>
-        <div class="s-chart"><svg viewBox="0 0 300 84" preserveAspectRatio="none">
-          <path class="area" d="M0,70 L30,64 L60,66 L90,56 L120,60 L150,48 L180,52 L210,38 L240,42 L270,28 L300,22 L300,84 L0,84 Z"/>
-          <path d="M0,70 L30,64 L60,66 L90,56 L120,60 L150,48 L180,52 L210,38 L240,42 L270,28 L300,22"/>
-        </svg></div>
-        <div class="s-meta">
-          <div><div class="val">BTC+</div><div class="cap">хедж просадок базового актива</div></div>
-          <span class="s-link"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        </div>
-      </a>
-      <a class="s-card rv" href="https://quanthill.kg/ru/strategii/strategiya-us-trend/">
-        <span class="s-tag">Фондовый рынок США</span>
-        <h3>US Trend</h3>
-        <p>Активная трендовая стратегия для американского фондового рынка — крупнейшего рынка мира.</p>
-        <div class="s-chart"><svg viewBox="0 0 300 84" preserveAspectRatio="none">
-          <path class="area" d="M0,72 L30,68 L60,62 L90,64 L120,52 L150,56 L180,44 L210,48 L240,34 L270,38 L300,26 L300,84 L0,84 Z"/>
-          <path d="M0,72 L30,68 L60,62 L90,64 L120,52 L150,56 L180,44 L210,48 L240,34 L270,38 L300,26"/>
-        </svg></div>
-        <div class="s-meta">
-          <div><div class="val">S&amp;P+</div><div class="cap">трендовое следование рынку США</div></div>
-          <span class="s-link"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- team -->
-<section class="team sect-pad" id="team">
-  <div class="container grid">
-    <div class="photo rv">
-      <img src="foto/teams-1.jpg" alt="Команда Quant Hill в трейдинг-офисе: обсуждение стратегий у торговых терминалов" width="832" height="1040" loading="lazy" decoding="async">
-      <div class="frame"></div>
-    </div>
-    <div>
-      <div class="eyebrow rv">Команда</div>
-      <p class="quote rv">«Система всегда будет более эффективной и стабильной, чем <span class="accent">интуиция»</span></p>
-      <div class="who rv">
-        <div class="ava"><img src="foto/founder.png" alt="Игорь Шепелев" width="56" height="56" loading="lazy" decoding="async"></div>
-        <div><div class="nm">Игорь Шепелев</div><div class="rl">Основатель, CEO · 12+ лет в алгоритмической торговле</div></div>
       </div>
-      <p class="desc rv">Десятилетие непрерывного обучения и преодоления рыночных кризисов объединило нас в опытную команду, которая разрабатывает и поддерживает высококачественные инвестиционные решения. Мы радикально честны с клиентами — включая публикацию убыточных лет.</p>
-    </div>
-  </div>
-</section>
+      <div class="hero-copy">
+        <p class="kicker"><span>Quantitative asset management</span><span>На рынках с 2014 года</span></p>
+        <h1 id="hero-title"><span>Системное управление</span><span>капиталом.</span></h1>
+        <div class="hero-bottom">
+          <p>Алгоритмические стратегии для мировых фондовых и цифровых рынков. Проверяемая логика, автоматизированное исполнение и риск, определённый заранее.</p>
+          <div class="hero-actions">
+            <a class="hero-button hero-button-primary" href="#method"><span>Как мы работаем</span><b aria-hidden="true">↓</b></a>
+          <a class="hero-button hero-button-secondary" href="#contact"><span>Обсудить задачу</span><b aria-hidden="true">↗</b></a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats" aria-label="Ключевые преимущества">
+        <div class="hero-stat"><strong><em>12</em> лет</strong><span>управления собственным и клиентским капиталом</span></div>
+        <div class="hero-stat"><strong>$<em>100</em>M+</strong><span>капитал под управлением на пике</span></div>
+        <div class="hero-stat"><strong>+<em>35</em>%</strong><span>доходность по всем стратегиям в 2024 году</span></div>
+        <div class="hero-stat"><strong><em>100</em>%</strong><span>сделок исполняется алгоритмами — без участия человека</span></div>
+      </div>
+    </section>
 
-<!-- cta -->
-<section class="cta sect-pad" id="contact">
-  <div class="container">
-    <div>
-      <h2 class="rv">Обсудим вашу инвестиционную <span style="color:var(--cobalt-soft)">задачу</span></h2>
-      <div style="margin-top:40px" class="rv"><a class="btn" href="mailto:info@quanthill.kg"><span>Запланировать звонок</span></a></div>
-    </div>
-    <div class="contacts rv">
-      <a href="tel:+996500012680"><span class="ic"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>+996 500 012 680</a>
-      <a href="mailto:info@quanthill.kg"><span class="ic"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>info@quanthill.kg</a>
-      <a href="https://t.me/quanthillpublic"><span class="ic"><svg viewBox="0 0 24 24"><path d="M22 3 2 10.5l5.5 2L9 19l3.5-4 5 4L22 3z"/></svg></span>t.me/quanthillpublic</a>
-    </div>
-  </div>
-</section>
-</main>
+    <section class="thesis pad" id="method">
+      <div class="section-id reveal">01 / Метод</div>
+      <div class="thesis-main reveal">
+        <p class="overline">Quantitative by design</p>
+        <h2>Рынок меняется.<br> Принцип остаётся.</h2>
+        <p class="lead">Инвестиционная гипотеза становится стратегией только после того, как выдерживает данные разных рыночных циклов, стресс-сценарии и независимую проверку. Решения принимает система. Ответственность остаётся за командой.</p>
+      </div>
+      <div class="method-grid">
+        <article class="method-card reveal"><span>01</span><h3>Исследование</h3><p>Математические и статистические модели находят повторяемые закономерности в больших массивах данных.</p><i>DATA / MODEL</i></article>
+        <article class="method-card reveal"><span>02</span><h3>Проверка</h3><p>Максимальный исторический массив, стресс-тесты и моделирование Монте-Карло проверяют устойчивость идеи.</p><i>TEST / VERIFY</i></article>
+        <article class="method-card reveal"><span>03</span><h3>Исполнение</h3><p>Сигнал, размер позиции и сделка проходят через собственную платформу без эмоционального вмешательства.</p><i>SIGNAL / EXECUTE</i></article>
+        <article class="method-card accent reveal"><span>04</span><h3>Контроль</h3><p>Предел риска фиксируется заранее и отслеживается на уровне позиции, стратегии и всего счёта.</p><i>LIMIT / CONTROL</i></article>
+      </div>
+    </section>
 
-<!-- footer -->
-<footer>
-  <div class="container">
-    <div class="top">
-      <a class="logo" href="#" aria-label="Quant Hill">
-        <svg viewBox="0 0 241 63" xmlns="http://www.w3.org/2000/svg"><use href="#qhlogo" style="--ink:#fff;--cobalt:#3D74C8"/></svg>
-      </a>
-      <nav>
-        <a href="#approach">О нас</a>
-        <a href="#approach">Почему мы</a>
-        <a href="#strategies">Стратегии</a>
-        <a href="#team">Карьера</a>
-        <a href="#contact">Контакты</a>
-      </nav>
+    <section class="proof" id="infrastructure">
+      <div class="proof-photo reveal"><img src="./uploads/institutional-research.webp" loading="lazy" alt="Команда количественных исследователей за анализом стратегии" width="1536" height="1024"></div>
+      <div class="proof-copy">
+        <p class="section-id reveal">02 / Что получает инвестор</p>
+        <h2 class="reveal">Деньги остаются<br> под вашим контролем.</h2>
+        <p class="reveal">Активы хранятся на личном счёте клиента у выбранного брокера или биржи. Quant Hill подключается по API исключительно для торговли — без права вывода или перемещения средств.</p>
+        <dl class="proof-list">
+          <div class="reveal"><dt>01</dt><dd><strong>100% ликвидность</strong><span>Подключение и отключение от стратегии без передачи активов управляющей компании.</span></dd></div>
+          <div class="reveal"><dt>02</dt><dd><strong>Гибкий уровень риска</strong><span>20%, 30% или 50% капитала — параметр фиксируется в договоре относительно High Water Mark.</span></dd></div>
+          <div class="reveal"><dt>03</dt><dd><strong>Персональная поддержка</strong><span>Менеджер сопровождает открытие счёта, KYC, API и запуск стратегии.</span></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="strategies pad" id="strategies">
+      <div class="strategy-heading">
+        <p class="section-id reveal">03 / Стратегии</p>
+        <h2 class="reveal">Три стратегии.<br> <span>Одна дисциплина.</span></h2>
+        <div class="strategy-heading-aside reveal">
+          <p>Системные модели для цифровых активов и рынка акций США с целевым горизонтом от двух лет.</p>
+          <a class="strategy-heading-link" href="./strategies.html"><span>Сравнить стратегии</span><b aria-hidden="true">↗</b></a>
+        </div>
+      </div>
+      <div class="strategy-cards">
+        <a class="strategy-card strategy-card-featured reveal" href="./crypto-trend.html" aria-label="Подробнее о стратегии Crypto Trend">
+          <span class="strategy-card-tag">Флагман · USDT</span>
+          <h3>Crypto Trend</h3>
+          <p>Системное участие в устойчивых движениях рынка цифровых активов с оценкой результата в USDT.</p>
+          <div class="strategy-chart" aria-hidden="true">
+            <svg viewBox="0 0 300 84" preserveAspectRatio="none">
+              <defs><linearGradient id="crypto-card-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient></defs>
+              <path class="area" fill="url(#crypto-card-area)" d="M0,78 L8,77 L16,76 L24,74 L32,73 L39,71 L47,68 L55,66 L63,67 L71,62 L79,58 L87,60 L95,54 L103,50 L111,52 L118,46 L126,48 L134,42 L142,44 L150,45 L158,40 L166,43 L174,38 L182,34 L189,36 L197,31 L205,33 L213,28 L221,30 L229,24 L237,27 L245,22 L253,18 L261,25 L268,16 L276,13 L284,15 L292,11 L300,12 L300,84 L0,84 Z"></path>
+              <path class="line" d="M0,78 L8,77 L16,76 L24,74 L32,73 L39,71 L47,68 L55,66 L63,67 L71,62 L79,58 L87,60 L95,54 L103,50 L111,52 L118,46 L126,48 L134,42 L142,44 L150,45 L158,40 L166,43 L174,38 L182,34 L189,36 L197,31 L205,33 L213,28 L221,30 L229,24 L237,27 L245,22 L253,18 L261,25 L268,16 L276,13 L284,15 L292,11 L300,12"></path>
+            </svg>
+          </div>
+          <div class="strategy-card-bottom"><div><span>Целевая чистая доходность</span><strong>40<sup>%</sup></strong></div><i aria-hidden="true">↗</i></div>
+        </a>
+
+        <a class="strategy-card reveal" href="./bitcoin-hedge.html" aria-label="Подробнее о стратегии Bitcoin Hedge">
+          <span class="strategy-card-tag">Цифровые активы · BTC</span>
+          <h3>Bitcoin Hedge</h3>
+          <p>Трендовая модель для долгосрочного увеличения количества Bitcoin с оценкой результата в BTC.</p>
+          <div class="strategy-chart" aria-hidden="true">
+            <svg viewBox="0 0 300 84" preserveAspectRatio="none">
+              <defs><linearGradient id="btc-card-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0047ab" stop-opacity=".2"></stop><stop offset="1" stop-color="#0047ab" stop-opacity="0"></stop></linearGradient></defs>
+              <path class="area" fill="url(#btc-card-area)" d="M0,76 L8,75 L16,73 L24,74 L32,70 L39,68 L47,69 L55,64 L63,60 L71,62 L79,57 L87,58 L95,53 L103,55 L111,49 L118,50 L126,45 L134,47 L142,42 L150,40 L158,43 L166,38 L174,39 L182,34 L189,36 L197,31 L205,33 L213,29 L221,31 L229,26 L237,28 L245,23 L253,25 L261,20 L268,22 L276,17 L284,19 L292,14 L300,13 L300,84 L0,84 Z"></path>
+              <path class="line" d="M0,76 L8,75 L16,73 L24,74 L32,70 L39,68 L47,69 L55,64 L63,60 L71,62 L79,57 L87,58 L95,53 L103,55 L111,49 L118,50 L126,45 L134,47 L142,42 L150,40 L158,43 L166,38 L174,39 L182,34 L189,36 L197,31 L205,33 L213,29 L221,31 L229,26 L237,28 L245,23 L253,25 L261,20 L268,22 L276,17 L284,19 L292,14 L300,13"></path>
+            </svg>
+          </div>
+          <div class="strategy-card-bottom"><div><span>Целевая чистая доходность</span><strong>70<sup>%</sup></strong></div><i aria-hidden="true">↗</i></div>
+        </a>
+
+        <a class="strategy-card reveal" href="./us-trend.html" aria-label="Подробнее о стратегии US Trend">
+          <span class="strategy-card-tag">Акции США · USD</span>
+          <h3>US Trend</h3>
+          <p>Алгоритмическое участие в трендах ликвидных акций США с оценкой результата в USD.</p>
+          <div class="strategy-chart" aria-hidden="true">
+            <svg viewBox="0 0 300 84" preserveAspectRatio="none">
+              <defs><linearGradient id="us-card-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0047ab" stop-opacity=".2"></stop><stop offset="1" stop-color="#0047ab" stop-opacity="0"></stop></linearGradient></defs>
+              <path class="area" fill="url(#us-card-area)" d="M0,77 L8,76 L16,76 L24,75 L32,74 L39,74 L47,72 L55,73 L63,71 L71,70 L79,71 L87,69 L95,68 L103,69 L111,66 L118,67 L126,64 L134,65 L142,62 L150,63 L158,60 L166,58 L174,59 L182,55 L189,56 L197,52 L205,50 L213,47 L221,49 L229,44 L237,46 L245,40 L253,42 L261,35 L268,30 L276,26 L284,18 L292,14 L300,16 L300,84 L0,84 Z"></path>
+              <path class="line" d="M0,77 L8,76 L16,76 L24,75 L32,74 L39,74 L47,72 L55,73 L63,71 L71,70 L79,71 L87,69 L95,68 L103,69 L111,66 L118,67 L126,64 L134,65 L142,62 L150,63 L158,60 L166,58 L174,59 L182,55 L189,56 L197,52 L205,50 L213,47 L221,49 L229,44 L237,46 L245,40 L253,42 L261,35 L268,30 L276,26 L284,18 L292,14 L300,16"></path>
+            </svg>
+          </div>
+          <div class="strategy-card-bottom"><div><span>Целевая чистая доходность</span><strong>20<sup>%</sup></strong></div><i aria-hidden="true">↗</i></div>
+        </a>
+      </div>
+      <p class="fineprint">Целевые показатели являются ориентирами, а не гарантией результата. Инвестирование связано с риском потери капитала. Информация не является индивидуальной инвестиционной рекомендацией.</p>
+    </section>
+
+    <section class="fees">
+      <div class="fees-title reveal"><p class="section-id">04 / Условия</p><h2>Прозрачная<br> структура.</h2></div>
+      <div class="fees-grid">
+        <article class="reveal"><span>Management fee</span><strong>2%</strong><p>Ежегодная комиссия от суммы активов под управлением.</p></article>
+        <article class="reveal"><span>Performance fee</span><strong>30%</strong><p>Только с новой прибыли сверх уровня High Water Mark.</p></article>
+        <article class="reveal"><span>Ликвидность</span><strong>100%</strong><p>Средства остаются на счёте клиента. Закрытие позиций — от 10–15 минут в рабочее время.</p></article>
+        <article class="blue reveal"><span>Формат</span><strong>API</strong><p>Отдельно управляемый счёт без права вывода средств управляющей компанией.</p></article>
+      </div>
+    </section>
+
+    <section class="technology pad" id="technology">
+      <div class="technology-heading">
+        <p class="section-id reveal">05 / Технологии</p>
+        <div class="reveal">
+          <p class="overline">Infrastructure by design</p>
+          <h2>Инфраструктура,<br> которой нет <span>у других.</span></h2>
+          <p class="technology-lead">Торговая экосистема полностью разработана нашей командой — от исследований и бэктестов до контроля рисков и исполнения сделок за миллисекунды.</p>
+        </div>
+      </div>
+
+      <div class="technology-layout">
+        <div class="technology-list">
+          <article class="technology-item is-active reveal" data-technology-item="0">
+            <button type="button" data-technology-toggle aria-expanded="true" aria-controls="technology-panel-1">
+              <span>01</span><strong>Собственная торговая платформа</strong><i aria-hidden="true"></i>
+            </button>
+            <div class="technology-item-copy" id="technology-panel-1"><p>Единая среда для исследований, бэктестов и боевой торговли. Никаких сторонних «чёрных ящиков» — мы контролируем каждую строку кода.</p></div>
+          </article>
+          <article class="technology-item reveal" data-technology-item="1">
+            <button type="button" data-technology-toggle aria-expanded="false" aria-controls="technology-panel-2">
+              <span>02</span><strong>Распределённая система серверов</strong><i aria-hidden="true"></i>
+            </button>
+            <div class="technology-item-copy" id="technology-panel-2"><p>Узлы размещены рядом с биржевыми дата-центрами по всему миру. Отказ одного сервера не останавливает торговлю.</p></div>
+          </article>
+          <article class="technology-item reveal" data-technology-item="2">
+            <button type="button" data-technology-toggle aria-expanded="false" aria-controls="technology-panel-3">
+              <span>03</span><strong>Стресс-тестирование под нагрузкой</strong><i aria-hidden="true"></i>
+            </button>
+            <div class="technology-item-copy" id="technology-panel-3"><p>Система регулярно проходит экстремальные сценарии: всплески волатильности, разрывы ликвидности и сбои каналов связи.</p></div>
+          </article>
+          <article class="technology-item reveal" data-technology-item="3">
+            <button type="button" data-technology-toggle aria-expanded="false" aria-controls="technology-panel-4">
+              <span>04</span><strong>Многоуровневый контроль рисков</strong><i aria-hidden="true"></i>
+            </button>
+            <div class="technology-item-copy" id="technology-panel-4"><p>Независимые контуры работают на уровне позиции, стратегии и портфеля. Лимиты убытка зашиты в код и не пересматриваются вручную.</p></div>
+          </article>
+        </div>
+
+        <div class="technology-visual reveal" data-technology-visual data-focus="0">
+          <div class="technology-stage">
+            <svg class="technology-diagram technology-network" viewBox="0 0 640 560" role="img" aria-labelledby="technology-network-title">
+              <title id="technology-network-title">Анимированная распределённая сеть исполнения Quant Hill</title>
+              <g class="technology-links" fill="none">
+                <path d="M320 280L110 108M320 280L320 72M320 280L530 112M320 280L570 280M320 280L505 462M320 280L320 500M320 280L112 454M320 280L70 280"/>
+              </g>
+              <g class="technology-packets" aria-hidden="true">
+                <circle class="technology-packet" r="3.2"><animateMotion class="technology-packet-motion" dur="4.2s" begin="0s" repeatCount="indefinite" path="M110 108L320 280"/></circle>
+                <circle class="technology-packet" r="3.2"><animateMotion class="technology-packet-motion" dur="4.2s" begin="-0.55s" repeatCount="indefinite" path="M320 72L320 280"/></circle>
+                <circle class="technology-packet" r="3.2"><animateMotion class="technology-packet-motion" dur="4.2s" begin="-1.1s" repeatCount="indefinite" path="M530 112L320 280"/></circle>
+                <circle class="technology-packet" r="3.2"><animateMotion class="technology-packet-motion" dur="4.2s" begin="-1.65s" repeatCount="indefinite" path="M570 280L320 280"/></circle>
+                <circle class="technology-packet" r="3.2"><animateMotion class="technology-packet-motion" dur="4.2s" begin="-2.2s" repeatCount="indefinite" path="M505 462L320 280"/></circle>
+                <circle class="technology-packet" r="3.2"><animateMotion class="technology-packet-motion" dur="4.2s" begin="-2.75s" repeatCount="indefinite" path="M320 500L320 280"/></circle>
+                <circle class="technology-packet" r="3.2"><animateMotion class="technology-packet-motion" dur="4.2s" begin="-3.3s" repeatCount="indefinite" path="M112 454L320 280"/></circle>
+                <circle class="technology-packet" r="3.2"><animateMotion class="technology-packet-motion" dur="4.2s" begin="-3.85s" repeatCount="indefinite" path="M70 280L320 280"/></circle>
+              </g>
+              <g class="technology-stress-rings" aria-hidden="true"><circle cx="320" cy="280" r="58"/><circle cx="320" cy="280" r="58"/></g>
+              <g class="technology-risk-rings" aria-hidden="true">
+                <circle cx="320" cy="280" r="78"/><circle cx="320" cy="280" r="122"/><circle cx="320" cy="280" r="166"/>
+                <text x="400" y="267">POSITION</text><text x="444" y="267">STRATEGY</text><text x="488" y="267">PORTFOLIO</text>
+              </g>
+              <g class="technology-node"><circle cx="110" cy="108" r="6"/><text x="110" y="84">NYSE</text></g>
+              <g class="technology-node"><circle cx="320" cy="72" r="6"/><text x="320" y="47">NASDAQ</text></g>
+              <g class="technology-node"><circle cx="530" cy="112" r="6"/><text x="530" y="87">CME</text></g>
+              <g class="technology-node"><circle cx="570" cy="280" r="6"/><text x="570" y="313">BINANCE</text></g>
+              <g class="technology-node"><circle cx="505" cy="462" r="6"/><text x="505" y="495">OKX</text></g>
+              <g class="technology-node"><circle cx="320" cy="500" r="6"/><text x="320" y="535">IBKR</text></g>
+              <g class="technology-node"><circle cx="112" cy="454" r="6"/><text x="112" y="488">MOEX</text></g>
+              <g class="technology-node"><circle cx="70" cy="280" r="6"/><text x="70" y="313">BITMEX</text></g>
+              <g class="technology-core">
+                <circle class="technology-core-ring" cx="320" cy="280" r="58"/>
+                <circle class="technology-core-disc" cx="320" cy="280" r="39"/>
+                <text x="320" y="276">QH</text><text class="technology-core-label" x="320" y="299">CORE</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="team pad" id="team" aria-label="Команда Quant Hill">
+      <div class="team-photo reveal">
+        <img src="./uploads/teams-1.jpg" alt="Команда Quant Hill обсуждает стратегии у торговых терминалов" width="832" height="1040" loading="lazy" decoding="async">
+        <div class="team-photo-frame" aria-hidden="true"></div>
+        <span class="team-photo-label">Quant Hill / Team</span>
+      </div>
+      <div class="team-copy team-experience-copy">
+        <p class="section-id reveal">06 / Команда</p>
+        <p class="team-tenure reveal"><strong>12</strong><span>лет</span></p>
+        <h2 class="team-experience-title reveal">управления собственным и клиентским капиталом</h2>
+        <p class="team-experience-lead reveal">С 2014 года команда Quant Hill проходит вместе с рынком периоды роста, коррекций и кризисов — сохраняя единый системный подход к исследованиям, исполнению и контролю риска.</p>
+        <button class="team-client-cta reveal cta-motion" type="button" data-contact-open><span>Стать клиентом</span><b aria-hidden="true">↗</b></button>
+      </div>
+    </section>
+
+    <section class="faq pad" id="faq">
+      <div class="faq-head"><p class="section-id reveal">07 / FAQ</p><h2 class="reveal">Вопросы,<br> которые стоит задать.</h2></div>
+      <div class="faq-list">
+        <details class="reveal"><summary><span>01</span>Где находятся средства инвестора?<i></i></summary><p>На личном счёте инвестора у выбранного брокера или биржи. Quant Hill торгует через API, ограниченный по IP и функционалу, и не имеет права выводить или перемещать активы.</p></details>
+        <details class="reveal"><summary><span>02</span>Гарантируется ли доход?<i></i></summary><p>Нет. Рынок меняется, поэтому обещание фиксированной прибыли было бы неэтичным. Вместо этого в договоре фиксируется максимально допустимый уровень риска, а алгоритмы регулярно адаптируются и оптимизируются.</p></details>
+        <details class="reveal"><summary><span>03</span>Какой рекомендуемый горизонт?<i></i></summary><p>От одного года: на длинном горизонте фактические результаты точнее соответствуют целевым показателям. При этом ограничений на вывод средств нет.</p></details>
+        <details class="reveal"><summary><span>04</span>Как рассчитываются комиссии?<i></i></summary><p>2% в год от активов под управлением и 30% от новой прибыли по итогам квартала. Performance fee применяется только к превышению High Water Mark.</p></details>
+        <details class="reveal"><summary><span>05</span>Как выбирается риск?<i></i></summary><p>Клиент выбирает уровень 20%, 30% или 50% от капитала. Он определяет допустимое кредитное плечо и предельную просадку относительно High Water Mark.</p></details>
+        <details class="reveal"><summary><span>06</span>Как происходит подключение?<i></i></summary><p>Открытие счёта, KYC и настройка, выпуск API-ключей, фондирование, подписание договора доверительного управления и запуск стратегии в согласованных параметрах.</p></details>
+        <details class="reveal"><summary><span>07</span>Как быстро можно выйти?<i></i></summary><p>Закрытие позиций и готовность средств к выводу занимает 10–15 минут в рабочее время и 1–2 часа ночью или в нерабочие дни. Сам вывод проходит по регламенту брокера или биржи.</p></details>
+        <details class="reveal"><summary><span>08</span>Кто отвечает за налоги?<i></i></summary><p>Quant Hill не является налоговым агентом. Расчёт и уплата налогов остаются ответственностью инвестора.</p></details>
+      </div>
+    </section>
+
+    <section class="contact about-contact" id="contact">
+      <p class="about-contact-kicker reveal" data-header-hide>Контакты</p>
+      <div class="about-contact-layout">
+        <div class="about-contact-copy">
+          <h2 class="reveal">Обсудим<br> <em>вашу задачу.</em></h2>
+          <div class="contact-top reveal"><button type="button" class="contact-open cta-motion" data-contact-open><span>Написать нам</span><b aria-hidden="true">↗</b></button></div>
+        </div>
+        <div class="contact-bottom reveal">
+          <div><span>Телефон</span><a href="tel:+996888888031">+996 888 888 031</a></div>
+          <div><span>Email</span><a href="mailto:info@quanthill.kg">info@quanthill.kg</a></div>
+          <div><span>Адрес</span><p>720040, Бишкек, ул. Исхака Раззакова, 19, офис 605</p></div>
+          <div><span>Telegram</span><a href="https://t.me/quanthillpublic" target="_blank" rel="noopener">@quanthillpublic <i aria-hidden="true">↗</i></a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer about-footer">
+    <div class="footer-main">
+      <a href="#top" class="footer-logo" aria-label="Quant Hill — наверх"><img src="./accets/logo-quanthill.svg" width="241" height="63" alt="Quant Hill"></a>
+      <nav class="footer-nav" aria-label="Навигация в подвале"><a href="./about.html">О компании</a><a href="./strategies.html">Стратегии</a><a href="./technologies.html">Технологии</a><a href="./blog/index.html">Блог и новости</a><a href="./contacts.html">Контакты</a></nav>
     </div>
-    <div class="legal">
+    <div class="footer-legal">
       <p>Размещённая на сайте информация носит исключительно ознакомительный характер и не является офертой, инвестиционной рекомендацией или финансовой консультацией. Инвестирование связано с высокими рисками, включая риск полной потери капитала. Исторические результаты не являются показателем будущей доходности.</p>
-      <p>© 2014–2026 Quant Hill · ОсОО «Квант Хилл»<br>Все права защищены</p>
+      <div><p>© 2014–2026 Quant Hill · ОсОО «Квант Хилл»<br>Все права защищены</p><button type="button" data-risk-open>Раскрытие рисков</button></div>
     </div>
-  </div>
-</footer>
-<script>
-(function(){
-"use strict";
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  </footer>
 
-/* ---------- preloader ---------- */
-const loader=document.getElementById('loader'),pct=document.getElementById('pct');
-let p=0;
-const tick=setInterval(()=>{
-  p=Math.min(100,p+Math.ceil(Math.random()*22));
-  pct.textContent=p+'%';
-  if(p>=100){clearInterval(tick);
-    setTimeout(()=>{loader.classList.add('done');document.body.classList.add('ready');},250);}
-},90);
+  <dialog class="contact-modal" data-contact-modal aria-labelledby="contact-form-title">
+    <div class="contact-modal-head"><span>Quant Hill · Contact</span><button type="button" data-contact-close aria-label="Закрыть">×</button></div>
+    <form class="contact-form" data-contact-form>
+      <h2 id="contact-form-title">Обсудим задачу.</h2>
+      <p>Оставьте контактные данные и коротко опишите ваш запрос.</p>
+      <label><span>Имя</span><input type="text" name="name" autocomplete="name" required></label>
+      <label><span>Телефон или email</span><input type="text" name="contact" autocomplete="email" required></label>
+      <label><span>Кратко о задаче</span><textarea name="message" rows="4" required></textarea></label>
+      <label class="contact-consent"><input type="checkbox" required><span>Я согласен на обработку данных для обратной связи.</span></label>
+      <button type="submit" class="contact-submit"><span>Отправить</span><b aria-hidden="true">↗</b></button>
+    </form>
+  </dialog>
 
-/* ---------- split hero words for mask reveal ---------- */
-const h1=document.getElementById('h1');
-(function(){
-  const nodes=[...h1.childNodes];h1.innerHTML='';
-  let delay=0;
-  nodes.forEach(node=>{
-    const isAccent=node.nodeType===1&&node.classList.contains('accent');
-    const words=(node.textContent||'').split(/\s+/).filter(Boolean);
-    words.forEach(w=>{
-      const span=document.createElement('span');span.className='w';
-      const i=document.createElement('i');i.textContent=w;
-      i.style.transitionDelay=(0.12+delay*0.085)+'s';
-      if(isAccent)span.classList.add('accent');
-      span.appendChild(i);h1.appendChild(span);h1.appendChild(document.createTextNode(' '));
-      delay++;
-    });
-  });
-})();
+  <aside class="risk-toast" data-risk-toast="" aria-label="Важная информация о рисках">
+    <div>
+      <span>Информация для инвесторов</span>
+      <p>Доходность в прошлом не гарантирует результатов в будущем.</p>
+    </div>
+    <button type="button" class="risk-more" data-risk-open="">Подробнее</button>
+    <button type="button" class="risk-dismiss" data-risk-dismiss="" aria-label="Закрыть уведомление">×</button>
+  </aside>
 
-/* ---------- header ---------- */
-const header=document.getElementById('header');
-let lastY=0;
-addEventListener('scroll',()=>{
-  const y=scrollY;
-  header.classList.toggle('scrolled',y>40);
-  header.classList.toggle('hidden',y>600&&y>lastY);
-  lastY=y;
-},{passive:true});
+  <dialog class="risk-modal" data-risk-modal="" aria-labelledby="risk-title">
+    <div class="risk-modal-head">
+      <span>Quant Hill · Risk disclosure</span>
+      <button type="button" data-risk-close="" aria-label="Закрыть">×</button>
+    </div>
+    <h2 id="risk-title">Инвестиции связаны с риском.</h2>
+    <p>Целевые показатели доходности и волатильности являются ориентирами, а не обещанием результата. Стоимость активов может как увеличиваться, так и снижаться. До принятия решения инвестору следует оценить собственный инвестиционный горизонт, допустимый уровень риска и условия договора.</p>
+    <p>Материалы сайта носят информационный характер и не являются индивидуальной инвестиционной рекомендацией.</p>
+    <button type="button" class="risk-confirm" data-risk-close="">Понятно</button>
+  </dialog>
 
-/* ---------- reveal on scroll ---------- */
-const io=new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target);}
-}),{threshold:.18,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.rv,.s-card,#twelve').forEach(el=>io.observe(el));
+  <script>
+    (() => {
+      const pageHeader = document.querySelector('[data-header]');
+      const hideTrigger = document.querySelector('[data-header-hide]');
+      if (!pageHeader || !hideTrigger) return;
 
-/* stagger approach cards */
-document.querySelectorAll('.cards4 .card').forEach((c,i)=>c.style.transitionDelay=(i*.1)+'s');
+      let frameRequested = false;
 
-/* ---------- counters ---------- */
-const cio=new IntersectionObserver(es=>es.forEach(e=>{
-  if(!e.isIntersecting)return;cio.unobserve(e.target);
-  const el=e.target,end=+el.dataset.count,t0=performance.now(),dur=1600;
-  (function step(t){
-    const k=Math.min(1,(t-t0)/dur),ease=1-Math.pow(1-k,4);
-    el.textContent=Math.round(end*ease);
-    if(k<1)requestAnimationFrame(step);
-  })(t0);
-}),{threshold:.6});
-document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+      const syncHeaderVisibility = () => {
+        const shouldHide = hideTrigger.getBoundingClientRect().top <= pageHeader.offsetHeight;
+        pageHeader.classList.toggle('is-hidden', shouldHide);
+        pageHeader.style.transform = shouldHide ? 'translateY(-105%)' : '';
+        frameRequested = false;
+      };
 
-/* ---------- marquee duplicate ---------- */
-const mq=document.getElementById('mqtrack');
-mq.innerHTML+=mq.innerHTML;
+      const requestHeaderSync = () => {
+        if (frameRequested) return;
+        frameRequested = true;
+        requestAnimationFrame(syncHeaderVisibility);
+      };
 
-/* ---------- accordion ---------- */
-document.querySelectorAll('.inf-item').forEach(item=>{
-  const body=item.querySelector('.body'),btn=item.querySelector('.row');
-  const sync=()=>{
-    const open=item.classList.contains('open');
-    body.style.maxHeight=open?body.scrollHeight+'px':'0px';
-    btn.setAttribute('aria-expanded',open?'true':'false');
-  };
-  sync();
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.inf-item.open').forEach(o=>{
-      if(o!==item){o.classList.remove('open');o.querySelector('.body').style.maxHeight='0px';
-        o.querySelector('.row').setAttribute('aria-expanded','false');}
-    });
-    item.classList.toggle('open');sync();
-  });
-  addEventListener('load',sync);
-});
+      window.addEventListener('scroll', requestHeaderSync, { passive: true });
+      window.addEventListener('resize', requestHeaderSync);
+      syncHeaderVisibility();
+    })();
+  </script>
 
-/* ---------- mobile nav ---------- */
-const burger=document.getElementById('burger'),mnav=document.getElementById('mnav');
-function closeMnav(){
-  burger.classList.remove('x');mnav.classList.remove('open');
-  document.body.classList.remove('lock');
-  burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Открыть меню');
-}
-burger.addEventListener('click',()=>{
-  const open=!mnav.classList.contains('open');
-  burger.classList.toggle('x',open);mnav.classList.toggle('open',open);
-  document.body.classList.toggle('lock',open);
-  burger.setAttribute('aria-expanded',open?'true':'false');
-  burger.setAttribute('aria-label',open?'Закрыть меню':'Открыть меню');
-});
-mnav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMnav));
-addEventListener('keydown',e=>{if(e.key==='Escape'&&mnav.classList.contains('open'))closeMnav();});
-
-/* ---------- hero: «Кривая роста» ----------
-   Сидированная генерация (seed 2014 — год основания).
-   12 лет фонда как восходящая equity-кривая: рисуется на глазах,
-   проходит просадки 2017 и 2022, обгоняет бледный бенчмарк.
-   Курсор — терминальный кросс-хейр с годом. */
-const fc=document.getElementById('flow'),fx=fc.getContext('2d');
-const DPR=Math.min(2,devicePixelRatio||1);
-const SEED=2014;
-function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-let W,H,heroStart=0,rnd;
-let pts=[],bm=[],ticks=[],marks=[],X0=0,X1=0,baseY=0,topY=0;
-const N=150;
-const mouse={x:-1e5,y:-1e5};
-const easeOut=k=>1-Math.pow(1-k,3);
-const easeIO=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
-
-function buildScene(){
-  W=fc.width=fc.offsetWidth*DPR;
-  H=fc.height=fc.offsetHeight*DPR;
-  rnd=mulberry32(SEED);
-  X0=W*.03;X1=W*.97;baseY=H*.87;topY=H*.16;
-  /* случайное блуждание с восходящим дрейфом и историческими просадками */
-  const gen=(drift0,vol,boost)=>{
-    let v=1;const vals=[];
-    for(let i=0;i<=N;i++){
-      const yr=2014+i/N*12;
-      let drift=drift0,vl=vol;
-      if(yr>2016.6&&yr<2017.6){drift=-.013;}
-      else if(yr>2021.9&&yr<2022.8){drift=-.011;vl=vol*1.15;}
-      else if(boost&&yr>2018.2&&yr<2021.6){drift=drift0*1.5;}
-      v*=1+drift+(rnd()-.5)*vl;
-      vals.push(v);
-    }
-    return vals;
-  };
-  const A=gen(.02,.05,true),B=gen(.0085,.055,false);
-  const lv=Math.log;
-  const lo=Math.min(...A.map(lv),...B.map(lv)),hi=Math.max(...A.map(lv));
-  const Y=v=>baseY-(lv(v)-lo)/(hi-lo)*(baseY-topY);
-  const X=i=>X0+i/N*(X1-X0);
-  pts=A.map((v,i)=>[X(i),Y(v)]);
-  bm=B.map((v,i)=>[X(i),Y(v)]);
-  const mobile=fc.offsetWidth<860;
-  const yrX=yr=>X((yr-2014)/12*N);
-  ticks=(mobile?[2014,2018,2022,2026]:[2014,2016,2018,2020,2022,2024,2026]).map(y=>[yrX(y),y]);
-  marks=mobile?[]:[
-    {yr:2018,label:'Выход на CME и крипторынки'},
-    {yr:2021,label:'Капитал под управлением $100M+',below:true},
-    {yr:2025,label:'+35% по всем стратегиям'}
-  ].map(m=>({i:Math.round((m.yr-2014)/12*N),yr:m.yr,label:m.label,below:m.below}));
-}
-/* частичная отрисовка кривой до прогресса upTo, возвращает точку-кончик */
-function curvePath(arr,upTo){
-  fx.beginPath();fx.moveTo(arr[0][0],arr[0][1]);
-  const m=Math.floor(upTo),fr=upTo-m;
-  for(let i=1;i<=m&&i<arr.length;i++)fx.lineTo(arr[i][0],arr[i][1]);
-  let tip=arr[Math.min(m,arr.length-1)];
-  if(m<arr.length-1&&fr>0){
-    const a=arr[m],b=arr[m+1];
-    tip=[a[0]+(b[0]-a[0])*fr,a[1]+(b[1]-a[1])*fr];
-    fx.lineTo(tip[0],tip[1]);
-  }
-  return tip;
-}
-let flowOn=true;
-new IntersectionObserver(es=>es.forEach(e=>flowOn=e.isIntersecting)).observe(fc);
-
-function drawHero(t){
-  if(document.hidden||!flowOn){if(!reduced)requestAnimationFrame(drawHero);return;}
-  if(!heroStart)heroStart=t;
-  fx.clearRect(0,0,W,H);
-  const p=reduced?1:Math.min(1,Math.max(0,(t-heroStart-500)/4800));
-  const e=easeIO(p);
-  const upTo=e*N;
-  const tipX=X0+(X1-X0)*e;
-
-  /* горизонтальная сетка и базовая линия */
-  fx.lineWidth=1;fx.strokeStyle='rgba(29,29,27,.055)';
-  for(let g=1;g<=3;g++){
-    const gy=topY+(baseY-topY)*g/4;
-    fx.beginPath();fx.moveTo(0,gy);fx.lineTo(W,gy);fx.stroke();
-  }
-  fx.strokeStyle='rgba(29,29,27,.12)';
-  fx.beginPath();fx.moveTo(0,baseY);fx.lineTo(W,baseY);fx.stroke();
-
-  /* годовые метки */
-  fx.font=`500 ${11*DPR}px 'Golos Text',sans-serif`;fx.textAlign='center';
-  ticks.forEach(([tx,yr])=>{
-    const a=Math.min(1,Math.max(0,(tipX-tx)/(W*.04)+1));
-    if(a<=0)return;
-    fx.fillStyle=`rgba(29,29,27,${.4*a})`;
-    fx.fillText(yr,tx,baseY+24*DPR);
-    fx.strokeStyle=`rgba(29,29,27,${.15*a})`;
-    fx.beginPath();fx.moveTo(tx,baseY);fx.lineTo(tx,baseY+7*DPR);fx.stroke();
-  });
-
-  /* бенчмарк — бледная линия, которую обгоняем */
-  curvePath(bm,upTo);
-  fx.strokeStyle='rgba(29,29,27,.22)';fx.lineWidth=1.3*DPR;fx.lineJoin='round';fx.stroke();
-
-  /* основная кривая: градиентная заливка + линия */
-  let tip=curvePath(pts,upTo);
-  fx.lineTo(tip[0],baseY);fx.lineTo(pts[0][0],baseY);fx.closePath();
-  const grad=fx.createLinearGradient(0,topY,0,baseY);
-  grad.addColorStop(0,'rgba(0,71,171,.16)');grad.addColorStop(1,'rgba(0,71,171,0)');
-  fx.fillStyle=grad;fx.fill();
-  tip=curvePath(pts,upTo);
-  fx.strokeStyle='#0047AB';fx.lineWidth=2.4*DPR;fx.lineJoin='round';fx.lineCap='round';fx.stroke();
-
-  /* вехи истории */
-  marks.forEach(mk=>{
-    if(upTo<mk.i)return;
-    const mx=pts[mk.i][0],my=pts[mk.i][1];
-    const a=Math.min(1,(upTo-mk.i)/6);
-    const dir=mk.below?1:-1;
-    fx.strokeStyle=`rgba(0,71,171,${.45*a})`;fx.lineWidth=1.2*DPR;
-    fx.beginPath();fx.moveTo(mx,my+7*DPR*dir);fx.lineTo(mx,my+26*DPR*dir);fx.stroke();
-    fx.fillStyle='#fff';
-    fx.beginPath();fx.arc(mx,my,4.2*DPR,0,6.283);fx.fill();
-    fx.strokeStyle=`rgba(0,71,171,${a})`;fx.lineWidth=2*DPR;fx.stroke();
-    const right=mx>W*.78;
-    fx.textAlign=right?'right':'left';
-    const lx=mx+(right?-8:8)*DPR;
-    const yrY=mk.below?my+42*DPR:my-46*DPR;
-    const lblY=mk.below?my+57*DPR:my-31*DPR;
-    fx.font=`600 ${11.5*DPR}px 'Golos Text',sans-serif`;
-    fx.fillStyle=`rgba(0,71,171,${.95*a})`;
-    fx.fillText(mk.yr,lx,yrY);
-    fx.font=`400 ${11.5*DPR}px 'Golos Text',sans-serif`;
-    fx.fillStyle=`rgba(29,29,27,${.66*a})`;
-    fx.fillText(mk.label,lx,lblY);
-  });
-
-  /* кончик кривой с пульсом */
-  if(p>.02){
-    const ph=(t%1600)/1600;
-    fx.strokeStyle=`rgba(0,71,171,${.45*(1-ph)})`;fx.lineWidth=1.5*DPR;
-    fx.beginPath();fx.arc(tip[0],tip[1],(5+ph*16)*DPR,0,6.283);fx.stroke();
-    fx.fillStyle='#0047AB';
-    fx.beginPath();fx.arc(tip[0],tip[1],4.4*DPR,0,6.283);fx.fill();
-    fx.strokeStyle='#fff';fx.lineWidth=2*DPR;fx.stroke();
-  }
-
-  /* терминальный кросс-хейр */
-  if(!reduced&&mouse.x>=X0&&mouse.x<=Math.min(tipX,X1)&&mouse.y>=0&&mouse.y<=H){
-    const i=Math.max(0,Math.min(N,Math.round(Math.min(upTo,(mouse.x-X0)/(X1-X0)*N))));
-    const cx=pts[i][0],cy=pts[i][1];
-    fx.strokeStyle='rgba(29,29,27,.16)';fx.lineWidth=1;
-    fx.setLineDash([4*DPR,4*DPR]);
-    fx.beginPath();fx.moveTo(cx,H*.135);fx.lineTo(cx,baseY);fx.stroke();
-    fx.setLineDash([]);
-    fx.fillStyle='#fff';
-    fx.beginPath();fx.arc(cx,cy,3.6*DPR,0,6.283);fx.fill();
-    fx.strokeStyle='#0047AB';fx.lineWidth=2*DPR;fx.stroke();
-    const lbl=String(Math.min(2026,Math.floor(2014+i/N*12)));
-    fx.font=`600 ${11*DPR}px 'Golos Text',sans-serif`;
-    const tw=fx.measureText(lbl).width+16*DPR;
-    const bx=Math.min(W-tw-4*DPR,Math.max(4*DPR,cx-tw/2));
-    const chipY=H*.135-24*DPR;
-    fx.fillStyle='#1D1D1B';
-    if(fx.roundRect){fx.beginPath();fx.roundRect(bx,chipY,tw,20*DPR,10*DPR);fx.fill();}
-    else fx.fillRect(bx,chipY,tw,20*DPR);
-    fx.fillStyle='#fff';fx.textAlign='center';
-    fx.fillText(lbl,bx+tw/2,chipY+13.5*DPR);
-  }
-
-  if(!reduced)requestAnimationFrame(drawHero);
-}
-
-/* интерактив указателя */
-const heroEl=document.querySelector('.hero');
-heroEl.addEventListener('pointermove',e=>{
-  const b=fc.getBoundingClientRect();
-  mouse.x=(e.clientX-b.left)*DPR;mouse.y=(e.clientY-b.top)*DPR;
-},{passive:true});
-heroEl.addEventListener('pointerleave',()=>{mouse.x=-1e5;mouse.y=-1e5;});
-
-/* инициализация и пересборка на ресайз */
-buildScene();
-let rsz;addEventListener('resize',()=>{clearTimeout(rsz);rsz=setTimeout(()=>{buildScene();if(reduced)drawHero(performance.now());},200);});
-if(!reduced)requestAnimationFrame(drawHero);
-else{
-  heroStart=-1e6;
-  drawHero(performance.now());
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>setTimeout(()=>drawHero(performance.now()),60));
-}
-
-/* ---------- infra bars canvas ---------- */
-const bc=document.getElementById('bars'),bx=bc.getContext('2d');
-let BW,BH,cols=[];
-function sizeBars(){
-  BW=bc.width=bc.offsetWidth*devicePixelRatio;
-  BH=bc.height=bc.offsetHeight*devicePixelRatio;
-  const n=Math.max(14,Math.floor(BW/(34*devicePixelRatio)));
-  cols=Array.from({length:n},(_,i)=>({
-    h:Math.random()*.5+.15,target:Math.random()*.7+.2,sp:.002+Math.random()*.004,phase:Math.random()*Math.PI*2
-  }));
-}
-let barsOn=true;
-new IntersectionObserver(es=>es.forEach(e=>barsOn=e.isIntersecting)).observe(bc);
-function drawBars(t){
-  if(document.hidden||!barsOn){requestAnimationFrame(drawBars);return;}
-  bx.clearRect(0,0,BW,BH);
-  const gap=BW/cols.length;
-  cols.forEach((c,i)=>{
-    if(Math.abs(c.h-c.target)<.01)c.target=Math.random()*.72+.18;
-    c.h+=(c.target-c.h)*c.sp*8;
-    const glow=.5+.5*Math.sin(t*.001+c.phase);
-    const x=i*gap+gap*.18,w=gap*.64,h=c.h*BH*.82,y=BH-h;
-    const g=bx.createLinearGradient(0,y,0,BH);
-    g.addColorStop(0,`rgba(61,116,200,${.55+glow*.35})`);
-    g.addColorStop(1,'rgba(0,71,171,.06)');
-    bx.fillStyle=g;bx.fillRect(x,y,w,h);
-    bx.fillStyle=`rgba(255,255,255,${.5+glow*.4})`;
-    bx.fillRect(x,y,w,2*devicePixelRatio);
-  });
-  requestAnimationFrame(drawBars);
-}
-sizeBars();addEventListener('resize',sizeBars);
-if(!reduced)requestAnimationFrame(drawBars);
-
-/* ---------- parallax hero on scroll ---------- */
-addEventListener('scroll',()=>{
-  const y=scrollY;
-  if(y<innerHeight)fc.style.transform=`translateY(${y*.25}px)`;
-},{passive:true});
-})();
-</script>
-</body>
-</html>
+</body></html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru" class="site-auth-pending">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bitcoin Hedge BTC — алгоритмическая трендовая стратегия Quant Hill для увеличения количества Bitcoin. Автоматическое исполнение, отдельный счёт и контролируемый риск.">
+  <meta name="theme-color" content="#062f68">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:title" content="Bitcoin Hedge BTC — Quant Hill">
+  <meta property="og:description" content="Трендовая стратегия для долгосрочного увеличения количества Bitcoin в разных фазах рынка цифровых активов.">
+  <meta property="og:type" content="website">
+  <title>Bitcoin Hedge BTC — Quant Hill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="./accets/css2" rel="stylesheet">
+  <link rel="stylesheet" href="./accets/institutional.css?v=20260727-dropdown-2">
+  <link rel="stylesheet" href="./accets/crypto-trend.css?v=20260727-hero-title-1">
+  <link rel="stylesheet" href="./accets/bitcoin-hedge.css?v=20260726-headings-1">
+  <script src="./accets/nav-dropdown.js?v=20260727-3" defer></script>
+  <script src="./accets/bitcoin-hedge.js?v=20260726-a11y-2" defer></script>
+  <link rel="stylesheet" href="./accets/site-auth.css?v=20260729-2">
+  <script src="./accets/site-auth.js?v=20260729-2"></script>
+</head>
+<body class="strategy-page bitcoin-hedge-page">
+  <a class="skip" href="#main">К содержанию</a>
+  <div class="progress" aria-hidden="true"><i></i></div>
+
+  <header class="header" data-header>
+    <a href="./index.html" class="logo" aria-label="Quant Hill — главная">
+      <img src="./accets/logo-quanthill.svg" width="241" height="63" alt="Quant Hill">
+    </a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="./about.html">О компании</a>
+      <div class="nav-dropdown" data-nav-dropdown>
+        <div class="nav-dropdown-label">
+          <a href="./strategies.html" class="is-active">Стратегии</a>
+          <button class="nav-dropdown-toggle" type="button" aria-label="Показать меню раздела «Стратегии»" aria-expanded="false" aria-controls="strategies-submenu" data-nav-dropdown-toggle><i aria-hidden="true"></i></button>
+        </div>
+        <div class="nav-dropdown-menu" id="strategies-submenu" aria-hidden="true" data-nav-dropdown-menu>
+          <a href="./strategies.html"><span><b>Все стратегии</b><small>Обзор и сравнение</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./crypto-trend.html"><span><b>Crypto Trend</b><small>Digital assets · USDT</small></span><i aria-hidden="true">↗</i></a>
+          <a href="#top" aria-current="page"><span><b>Bitcoin Hedge</b><small>Digital assets · BTC</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./us-trend.html"><span><b>US Trend</b><small>US equities · USD</small></span><i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+      <a href="./technologies.html">Технологии</a>
+      <a href="./blog/index.html">Блог и новости</a>
+      <a href="./contacts.html">Контакты</a>
+    </nav>
+    <div class="head-actions">
+      <a href="https://quanthill.kg/en/" class="lang">EN</a>
+      <a href="#contact" class="contact-link">Личный кабинет</a>
+      <button class="menu" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu><i></i><i></i></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="strategy-hero" id="top" aria-labelledby="strategy-title">
+      <div class="strategy-hero-atmosphere" aria-hidden="true"><i></i><i></i></div>
+      <div class="strategy-hero-inner">
+        <div class="strategy-hero-layout">
+          <div class="strategy-hero-copy">
+            <nav class="breadcrumbs" aria-label="Хлебные крошки">
+              <a href="./index.html">Главная</a><span>/</span><a href="./strategies.html">Стратегии</a><span>/</span><b>Bitcoin Hedge</b>
+            </nav>
+            <h1 id="strategy-title">Bitcoin <em>Hedge</em><sup>BTC</sup></h1>
+            <p class="strategy-hero-lead">Системная трендовая стратегия для долгосрочного увеличения количества Bitcoin. Алгоритм адаптирует направление позиции к фазе рынка, ограничивает риск и исполняет сделки круглосуточно.</p>
+            <div class="strategy-hero-actions">
+              <button type="button" class="hero-button hero-button-primary" data-contact-open><span>Запросить консультацию</span><b aria-hidden="true">↗</b></button>
+              <a class="hero-button hero-button-secondary" href="#results"><span>Посмотреть результаты</span><b aria-hidden="true">↓</b></a>
+            </div>
+          </div>
+
+          <div class="market-visual hedge-market-visual" data-hedge-visual tabindex="0" role="img" aria-label="Интерактивная модель Bitcoin Hedge: свечной график Bitcoin и смена режимов Long и Hedge в разных фазах рынка">
+            <svg class="market-canvas" viewBox="0 0 620 350" aria-hidden="true">
+              <defs>
+                <linearGradient id="hedge-zone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4c9cff" stop-opacity=".18"/><stop offset="1" stop-color="#4c9cff" stop-opacity="0"/></linearGradient>
+                <radialGradient id="hedge-grid-fade"><stop offset="38%" stop-color="#fff" stop-opacity="1"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+                <filter id="hedge-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <clipPath id="hedge-clip"><rect x="28" y="30" width="564" height="270"/></clipPath>
+                <mask id="hedge-grid-mask"><rect width="620" height="330" fill="url(#hedge-grid-fade)"/></mask>
+              </defs>
+              <g class="market-grid" mask="url(#hedge-grid-mask)">
+                <path d="M28 62H592M28 112H592M28 162H592M28 212H592M28 262H592M28 300H592"/>
+                <path d="M84 30V300M168 30V300M252 30V300M336 30V300M420 30V300M504 30V300"/>
+              </g>
+              <g clip-path="url(#hedge-clip)">
+                <path class="market-zone" data-hedge-zone/>
+                <g class="market-volume" data-hedge-volume></g>
+                <g class="market-candles" data-hedge-candles></g>
+                <path class="hedge-exposure-line" data-hedge-line pathLength="1" filter="url(#hedge-glow)"/>
+                <g class="market-crosshair" data-hedge-crosshair aria-hidden="true">
+                  <line data-hedge-cross-x x1="28" y1="170" x2="592" y2="170"/>
+                  <line data-hedge-cross-y x1="310" y1="30" x2="310" y2="300"/>
+                  <circle data-hedge-point cx="310" cy="170" r="4"/>
+                </g>
+              </g>
+              <g class="hedge-regime-axis">
+                <text x="30" y="330">LONG</text><line x1="75" y1="326" x2="220" y2="326"/>
+                <text x="248" y="330">HEDGE</text><line x1="309" y1="326" x2="387" y2="326"/>
+                <text x="415" y="330">LONG</text><line x1="460" y1="326" x2="590" y2="326"/>
+              </g>
+            </svg>
+            <div class="hedge-readout" aria-hidden="true">
+              <span><b data-hedge-regime>LONG</b> / EXPOSURE</span>
+              <strong data-hedge-value>+0.62</strong>
+              <small>model state</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="strategy-hero-stats" aria-label="Ключевые показатели стратегии">
+        <div><span>Чистая целевая доходность</span><strong><em>70.0</em>%</strong><small>в год, целевой ориентир</small></div>
+        <div><span>Gross CAGR с 2018 г.</span><strong><em>106.7</em>%</strong><small>исторический показатель</small></div>
+        <div><span>Max drawdown с 2018 г.</span><strong>−<em>30.8</em>%</strong><small>исторический показатель</small></div>
+        <div><span>Базовая валюта</span><strong><em>BTC</em></strong><small>результат оценивается в Bitcoin</small></div>
+      </div>
+    </section>
+
+    <section class="strategy-intro pad" id="overview">
+      <p class="section-id reveal">01 / О стратегии</p>
+      <div class="strategy-intro-copy reveal">
+        <p class="overline">Grow the coin count</p>
+        <h2>Рынок меняет направление.<br><span>Цель остаётся в BTC.</span></h2>
+        <div class="strategy-intro-text">
+          <p>Bitcoin Hedge — трендовая алгоритмическая стратегия для инвесторов, которые планируют долгосрочно владеть основными цифровыми активами. Её результат измеряется не в долларах, а в количестве Bitcoin.</p>
+          <p>Модель системно участвует в направленных движениях рынка и может адаптировать позицию к фазам роста и снижения. Торговые решения принимаются алгоритмом, без эмоциональных и ручных отклонений.</p>
+        </div>
+      </div>
+      <div class="strategy-principles">
+        <article class="principle reveal"><span>01</span><div class="principle-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="21"/><path d="M25 19v26M25 19h10a7 7 0 010 14H25M25 33h12a7 7 0 010 14H25M21 19h4M21 47h4"/></svg></div><h3>Считать результат в BTC</h3><p>Базовая валюта счёта и критерий результата — Bitcoin, а не его текущая цена в долларах США.</p></article>
+        <article class="principle reveal"><span>02</span><div class="principle-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M9 43l12-12 10 8 23-25"/><path d="M42 14h12v12"/><path d="M10 51h44"/></svg></div><h3>Следовать за трендом</h3><p>Система оценивает направление и устойчивость движения, затем формирует позицию по заранее заданным правилам.</p></article>
+        <article class="principle principle-accent reveal"><span>03</span><div class="principle-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 8l20 8v14c0 13-8 22-20 27C20 52 12 43 12 30V16z"/><path d="M22 32l7 7 14-16"/></svg></div><h3>Адаптировать защиту</h3><p>Направление и размер позиции меняются вместе с режимом рынка, а риск рассчитывается до исполнения сделки.</p></article>
+      </div>
+    </section>
+
+    <section class="hedge-logic pad" id="logic" aria-labelledby="hedge-logic-title">
+      <p class="section-id reveal">Логика стратегии</p>
+      <div class="hedge-logic-body">
+        <div class="hedge-logic-head">
+          <div class="reveal"><p class="overline">One objective · different regimes</p><h2 id="hedge-logic-title">Не прогнозировать рынок.<br><em>Перестраиваться вместе с ним.</em></h2></div>
+          <p class="reveal">Bitcoin Hedge объединяет долгосрочную базу в BTC с системным управлением направленной позицией. В каждой фазе алгоритм заново оценивает сигнал, волатильность и допустимый риск.</p>
+        </div>
+        <div class="hedge-logic-grid">
+          <article class="reveal"><span>01 / BASE</span><strong>BTC</strong><h3>Базовая валюта</h3><p>Результат стратегии и минимальная сумма подключения выражены в Bitcoin.</p></article>
+          <article class="reveal"><span>02 / SIGNAL</span><strong>24/7</strong><h3>Непрерывная модель</h3><p>Алгоритм анализирует ликвидные цифровые активы и распознаёт устойчивые направленные движения.</p></article>
+          <article class="reveal"><span>03 / REGIME</span><strong>↕</strong><h3>Два направления</h3><p>Позиция может адаптироваться как к восходящей, так и к нисходящей фазе рынка.</p></article>
+          <article class="reveal"><span>04 / LIMIT</span><strong>API</strong><h3>Контроль исполнения</h3><p>Риск проверяется до сделки, а активы остаются на отдельном счёте инвестора.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="engine" id="method">
+      <div class="engine-copy">
+        <p class="section-id reveal">02 / Как работает</p>
+        <h2 class="reveal">От режима рынка<br>до позиции — <em>один алгоритм.</em></h2>
+        <p class="engine-lead reveal">Собственное программное обеспечение и серверная инфраструктура объединяют рыночные данные, определение тренда, расчёт риска и исполнение в непрерывный контур.</p>
+        <div class="engine-steps">
+          <article class="reveal"><span>01</span><div><h3>Данные</h3><p>Система круглосуточно собирает и нормализует информацию с подключённых торговых площадок.</p></div><i>INGEST</i></article>
+          <article class="reveal"><span>02</span><div><h3>Режим</h3><p>Количественная модель определяет направление, силу и устойчивость рыночного тренда.</p></div><i>REGIME</i></article>
+          <article class="reveal"><span>03</span><div><h3>Риск</h3><p>До исполнения рассчитываются размер позиции и совокупный риск счёта в базовой валюте BTC.</p></div><i>LIMIT</i></article>
+          <article class="reveal"><span>04</span><div><h3>Исполнение</h3><p>Заявки направляются на биржу автоматически, а открытые позиции остаются под мониторингом.</p></div><i>EXECUTE</i></article>
+        </div>
+      </div>
+      <aside class="account-card reveal" aria-label="Контур отдельного счёта">
+        <div class="account-card-top"><span>Separately managed account</span><strong>Bitcoin остаётся<br>на счёте клиента.</strong></div>
+        <div class="account-diagram" aria-hidden="true">
+          <div class="account-client"><span>Client</span><b>BTC</b><small>личный счёт</small></div>
+          <div class="account-api"><span>API</span><i></i><small>просмотр + торговля</small></div>
+          <div class="account-core"><span>QH</span><b>CORE</b><small>без права вывода</small></div>
+        </div>
+        <dl class="account-list">
+          <div><dt>Площадки</dt><dd>OKX <span>оптимально</span> · Bybit · Binance</dd></div>
+          <div><dt>Договор</dt><dd>Официальный договор с ОсОО «Квант Хилл»</dd></div>
+          <div><dt>Доступ</dt><dd>Только просмотр и торговля — без права вывода средств</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="results pad" id="results">
+      <div class="results-head">
+        <p class="section-id reveal">03 / Результаты</p>
+        <div class="reveal"><p class="overline">Track record since 2018</p><h2><span class="results-line">Количество BTC растёт.</span><br><span>Риск остаётся измеримым.</span></h2></div>
+        <p class="results-intro reveal">Стратегия действует с 2018 года. Ниже приведены показатели актуального продуктового среза и расчётная накопленная доходность на основе опубликованных годовых результатов.</p>
+      </div>
+
+      <div class="growth-panel reveal">
+        <div class="growth-chart">
+          <div class="growth-chart-head">
+            <div><span>Накопленная доходность</span><strong>с 06.2018</strong></div>
+            <div class="growth-legend" aria-label="Легенда графика"><p><i></i>Bitcoin Hedge</p><p><i class="is-benchmark"></i>BTC</p></div>
+          </div>
+          <svg viewBox="0 0 940 430" role="img" aria-labelledby="growth-title growth-desc" data-growth-svg data-series-label="Bitcoin Hedge" data-annual-returns="538,193.8,246.1,46.9,34,20.1,69.8,6.3,36.2">
+            <title id="growth-title">Накопленная доходность Bitcoin Hedge и Bitcoin</title>
+            <desc id="growth-desc">Синяя линия показывает расчётную накопленную доходность Bitcoin Hedge, золотая линия — динамику Bitcoin в масштабе графика.</desc>
+            <defs><linearGradient id="growth-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c56c3" stop-opacity=".24"/><stop offset="1" stop-color="#0c56c3" stop-opacity="0"/></linearGradient><clipPath id="growth-reveal-clip"><rect class="growth-reveal-rect" x="72" y="40" width="828" height="320"/></clipPath></defs>
+            <g class="chart-grid"><path d="M72 350H900M72 275H900M72 200H900M72 125H900M72 50H900"/></g>
+            <g class="chart-y"><text x="54" y="354">0%</text><text x="54" y="279">10 000%</text><text x="54" y="204">20 000%</text><text x="54" y="129">30 000%</text><text x="54" y="54">40 000%</text></g>
+            <g clip-path="url(#growth-reveal-clip)"><path class="growth-area" d="M84 346L184 336.7L284 302.1L384 279.3L484 255L584 235.7L684 155.4L784 143.1L884 68L884 350L84 350Z"/></g>
+            <path class="benchmark-line" d="M84 349L184 348L284 347L384 343L484 346L584 344L684 338L784 336L884 343" pathLength="1"/>
+            <path class="growth-line" data-growth-series="strategy" d="M84 346L184 336.7L284 302.1L384 279.3L484 255L584 235.7L684 155.4L784 143.1L884 68" pathLength="1"/>
+            <circle class="year-point-highlight" data-year-point-highlight cx="84" cy="346" r="11" aria-hidden="true"/>
+            <g class="chart-points"><circle data-growth-year="2018" cx="84" cy="346" r="4"/><circle data-growth-year="2019" cx="184" cy="336.7" r="4"/><circle data-growth-year="2020" cx="284" cy="302.1" r="4"/><circle data-growth-year="2021" cx="384" cy="279.3" r="4"/><circle data-growth-year="2022" cx="484" cy="255" r="4"/><circle data-growth-year="2023" cx="584" cy="235.7" r="4"/><circle data-growth-year="2024" cx="684" cy="155.4" r="4"/><circle data-growth-year="2025" cx="784" cy="143.1" r="4"/><circle data-growth-year="2026" cx="884" cy="68" r="5"/></g>
+            <g class="growth-hover-marker" data-growth-marker aria-hidden="true"><line data-growth-guide x1="84" y1="50" x2="84" y2="350"/><circle class="growth-hover-halo" data-growth-halo cx="84" cy="350" r="10"/><circle class="growth-hover-dot" data-growth-dot cx="84" cy="350" r="4"/></g>
+            <g class="chart-x"><text x="84" y="385">2018</text><text x="184" y="385">2019</text><text x="284" y="385">2020</text><text x="384" y="385">2021</text><text x="484" y="385">2022</text><text x="584" y="385">2023</text><text x="684" y="385">2024</text><text x="784" y="385">2025</text><text x="884" y="385">2026</text></g>
+          </svg>
+          <div class="growth-tooltip" data-growth-tooltip aria-hidden="true" aria-live="polite"><span data-growth-tooltip-label>Bitcoin Hedge</span><strong data-growth-tooltip-value>+0,0%</strong><small data-growth-tooltip-date>2018</small></div>
+          <p class="growth-note">Расчётная кривая построена из опубликованных годовых результатов стратегии. 2026 — YTD на дату продуктового среза.</p>
+        </div>
+        <div class="year-returns">
+          <div class="year-returns-head"><span>Год</span><span>Доходность</span></div>
+          <div data-growth-year-row="2018"><span>2018</span><strong>538.0%</strong></div>
+          <div data-growth-year-row="2019"><span>2019</span><strong>193.8%</strong></div>
+          <div data-growth-year-row="2020"><span>2020</span><strong>246.1%</strong></div>
+          <div data-growth-year-row="2021"><span>2021</span><strong>46.9%</strong></div>
+          <div data-growth-year-row="2022"><span>2022</span><strong>34.0%</strong></div>
+          <div data-growth-year-row="2023"><span>2023</span><strong>20.1%</strong></div>
+          <div data-growth-year-row="2024"><span>2024</span><strong>69.8%</strong></div>
+          <div data-growth-year-row="2025"><span>2025</span><strong>6.3%</strong></div>
+          <div data-growth-year-row="2026"><span>2026 <small>YTD</small></span><strong>36.2%</strong></div>
+        </div>
+      </div>
+
+      <div class="metrics-block">
+        <div class="metrics-copy reveal"><p class="overline">Risk-adjusted comparison</p><h3>Цель — больше Bitcoin.<br><em>Не больше скрытого риска.</em></h3><p>Сопоставление с пассивным владением BTC показывает исторический профиль доходности, просадки и эффективности принимаемого риска.</p></div>
+        <div class="metrics-table reveal" role="table" aria-label="Сравнение показателей Bitcoin Hedge и Bitcoin">
+          <div class="metrics-row metrics-header" role="row"><span role="columnheader">Метрика</span><strong role="columnheader">Bitcoin Hedge</strong><b role="columnheader">BTC</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Среднегодовой темп роста, gross</span><strong role="cell">106.74%</strong><b role="cell">22.92%</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Средняя отрицательная волатильность</span><strong role="cell">20.88%</strong><b role="cell">30.22%</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Коэффициент Шарпа</span><strong role="cell">1.04</strong><b role="cell">0.28</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Коэффициент Кальмара</span><strong role="cell">3.31</strong><b role="cell">0.25</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Коэффициент Сортино</span><strong role="cell">4.90</strong><b role="cell">0.61</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Максимальная просадка</span><strong role="cell">−30.83%</strong><b role="cell">−73.01%</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Коэффициент β</span><strong role="cell">−0.05</strong><b role="cell">1</b></div>
+        </div>
+      </div>
+      <p class="results-disclaimer">Исторические показатели и целевые ориентиры не гарантируют будущую доходность. Gross-показатели приведены до удержания комиссий. Фактический результат зависит от момента подключения, параметров счёта, комиссий площадки и рыночных условий.</p>
+    </section>
+
+    <section class="fit-section" aria-labelledby="fit-title">
+      <div class="fit-title reveal"><p class="section-id">04 / Инвестору</p><h2 id="fit-title">Подходит ли вам<br><em>Bitcoin Hedge?</em></h2><p>Стратегия рассчитана на инвестора, который мыслит в Bitcoin и оценивает результат на длинном горизонте.</p></div>
+      <div class="fit-columns">
+        <div class="fit-column fit-yes reveal"><span>Подходит, если</span><ul><li>вы планируете владеть Bitcoin не менее двух лет;</li><li>хотите увеличивать количество BTC, а не только его стоимость в USD;</li><li>понимаете волатильность цифровых активов;</li><li>готовы оценивать результат на полном рыночном цикле.</li></ul></div>
+        <div class="fit-column reveal"><span>Не подходит, если</span><ul><li>вам нужна гарантия капитала или фиксированная доходность;</li><li>результат вы оцениваете только в долларах;</li><li>временная просадка неприемлема;</li><li>средства могут понадобиться в ближайшие месяцы.</li></ul></div>
+      </div>
+    </section>
+
+    <section class="terms pad" id="terms">
+      <div class="terms-head"><p class="section-id reveal">05 / Условия</p><div class="reveal"><p class="overline">Clear before launch</p><h2>Все ключевые условия —<br><span>до подключения.</span></h2></div></div>
+      <div class="terms-grid">
+        <article class="term-card term-main reveal"><span>Минимальная сумма</span><strong>2 BTC</strong><p>На отдельном счёте клиента в базовой валюте стратегии.</p></article>
+        <article class="term-card reveal"><span>Горизонт</span><strong>2+ <small>года</small></strong><p>Оптимальный срок для прохождения разных фаз рынка.</p></article>
+        <article class="term-card reveal"><span>Management fee</span><strong>2%</strong><p>Комиссия за управление. Расчёт комиссий — раз в квартал.</p></article>
+        <article class="term-card reveal"><span>Success fee</span><strong>30%</strong><p>Комиссия за результат применяется с учётом High Water Mark.</p></article>
+        <article class="term-card term-blue reveal"><span>Формат</span><strong>API</strong><p>Только просмотр и торговля. Без права вывода средств со счёта.</p></article>
+      </div>
+      <div class="launch-flow">
+        <div class="launch-flow-head reveal"><p class="overline">Launch process</p><h3>От первого разговора<br><span>до запуска стратегии.</span></h3></div>
+        <ol>
+          <li class="reveal"><span>01</span><div><strong>Знакомство</strong><p>Сверяем задачу, горизонт и допустимый риск.</p></div></li>
+          <li class="reveal"><span>02</span><div><strong>Счёт</strong><p>Вы выбираете площадку и проходите необходимые процедуры.</p></div></li>
+          <li class="reveal"><span>03</span><div><strong>Договор и API</strong><p>Фиксируем условия и подключаем права просмотра и торговли.</p></div></li>
+          <li class="reveal"><span>04</span><div><strong>Запуск</strong><p>Стратегия начинает работать в согласованном риск-профиле.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="faq pad" id="faq" aria-labelledby="faq-title">
+      <div class="faq-head"><p class="section-id reveal">06 / FAQ</p><h2 class="reveal" id="faq-title">Коротко о важном</h2></div>
+      <div class="faq-list strategy-faq-list">
+        <details class="reveal"><summary><span>01</span>Чем Bitcoin Hedge отличается от Crypto Trend?<i></i></summary><p>Bitcoin Hedge использует BTC как базовую валюту и нацелен на увеличение количества Bitcoin. Crypto Trend оценивает результат в USDT и нацелен на рост долларовой стоимости капитала. Это разные задачи и разные способы измерения результата.</p></details>
+        <details class="reveal"><summary><span>02</span>Может ли стратегия работать при снижении рынка?<i></i></summary><p>Алгоритм может адаптировать направление позиции к нисходящей фазе рынка. Это создаёт возможность участвовать в движении в обе стороны, но не исключает убытки и не гарантирует положительный результат в каждом периоде.</p></details>
+        <details class="reveal"><summary><span>03</span>Где хранятся средства инвестора?<i></i></summary><p>Активы находятся на личном счёте инвестора на выбранной бирже. Quant Hill подключается по API только для просмотра и торговли — без права вывода средств.</p></details>
+        <details class="reveal"><summary><span>04</span>Гарантируется ли целевая доходность 70%?<i></i></summary><p>Нет. Это целевой ориентир, а не обещание результата. Фактическая доходность зависит от рыночных условий, момента подключения, выбранного уровня риска, комиссий и параметров счёта.</p></details>
+        <details class="reveal"><summary><span>05</span>Почему рекомендуемый горизонт — от двух лет?<i></i></summary><p>Трендовая стратегия проходит периоды сильных движений, бокового рынка и временных просадок. Более длинный горизонт увеличивает выборку и снижает влияние отдельной рыночной фазы на оценку результата.</p></details>
+        <details class="reveal"><summary><span>06</span>Как рассчитывается комиссия за результат?<i></i></summary><p>Success fee составляет 30% и применяется к новому финансовому результату с учётом High Water Mark. Management fee составляет 2%; расчёт комиссий проводится раз в квартал согласно условиям договора.</p></details>
+      </div>
+    </section>
+
+    <section class="related-strategies pad" aria-label="Другие стратегии Quant Hill">
+      <div class="related-strategies-grid">
+        <a class="related-strategy reveal" href="./crypto-trend.html"><h2>Стратегия <span>Crypto Trend</span></h2><p>Активная трендовая стратегия для роста капитала в USDT</p><span>Узнать больше <i aria-hidden="true">↗</i></span></a>
+        <a class="related-strategy reveal" href="./us-trend.html"><h2>Стратегия <span class="related-strategy-name-block">US Trend</span></h2><p>Активная трендовая стратегия для американского фондового рынка</p><span>Узнать больше <i aria-hidden="true">↗</i></span></a>
+      </div>
+    </section>
+
+    <section class="contact about-contact" id="contact">
+      <p class="about-contact-kicker reveal" data-header-hide>Контакты</p>
+      <div class="about-contact-layout">
+        <div class="about-contact-copy"><h2 class="reveal">Обсудим<br> <em>вашу задачу.</em></h2><div class="contact-top reveal"><button type="button" class="contact-open cta-motion" data-contact-open><span>Написать нам</span><b aria-hidden="true">↗</b></button></div></div>
+        <div class="contact-bottom reveal">
+          <div><span>Телефон</span><a href="tel:+996888888031">+996 888 888 031</a></div>
+          <div><span>Email</span><a href="mailto:info@quanthill.kg">info@quanthill.kg</a></div>
+          <div><span>Адрес</span><p>720040, Бишкек, ул. Исхака Раззакова, 19, офис 605</p></div>
+          <div><span>Telegram</span><a href="https://t.me/quanthillpublic" target="_blank" rel="noopener">@quanthillpublic <i aria-hidden="true">↗</i></a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer about-footer">
+    <div class="footer-main"><a href="#top" class="footer-logo" aria-label="Quant Hill — наверх"><img src="./accets/logo-quanthill.svg" width="241" height="63" alt="Quant Hill"></a><nav class="footer-nav" aria-label="Навигация в подвале"><a href="./about.html">О компании</a><a href="./strategies.html">Стратегии</a><a href="./technologies.html">Технологии</a><a href="./blog/index.html">Блог и новости</a><a href="./contacts.html">Контакты</a></nav></div>
+    <div class="footer-legal"><p>Размещённая на сайте информация носит исключительно ознакомительный характер и не является офертой, инвестиционной рекомендацией или финансовой консультацией. Инвестирование связано с высокими рисками, включая риск полной потери капитала. Исторические результаты не являются показателем будущей доходности.</p><div><p>© 2014–2026 Quant Hill · ОсОО «Квант Хилл»<br>Все права защищены</p><button type="button" data-risk-open>Раскрытие рисков</button></div></div>
+  </footer>
+
+  <dialog class="contact-modal" data-contact-modal aria-labelledby="contact-form-title">
+    <div class="contact-modal-head"><span>Quant Hill · Bitcoin Hedge</span><button type="button" data-contact-close aria-label="Закрыть">×</button></div>
+    <form class="contact-form" data-contact-form>
+      <h2 id="contact-form-title">Обсудить Bitcoin Hedge.</h2>
+      <p>Оставьте контактные данные. Менеджер свяжется с вами, чтобы обсудить задачу, горизонт и параметры риска.</p>
+      <label><span>Имя</span><input type="text" name="name" autocomplete="name" required></label>
+      <label><span>Телефон или email</span><input type="text" name="contact" autocomplete="email" required></label>
+      <label><span>Комментарий</span><textarea name="message" rows="4" placeholder="Например: сумма, площадка, удобное время"></textarea></label>
+      <label class="contact-consent"><input type="checkbox" required><span>Я согласен на обработку данных для обратной связи.</span></label>
+      <button type="submit" class="contact-submit"><span>Отправить запрос</span><b aria-hidden="true">↗</b></button>
+    </form>
+  </dialog>
+
+  <aside class="risk-toast" data-risk-toast aria-label="Важная информация о рисках"><div><span>Информация для инвесторов</span><p>Доходность в прошлом не гарантирует результатов в будущем.</p></div><button type="button" class="risk-more" data-risk-open>Подробнее</button><button type="button" class="risk-dismiss" data-risk-dismiss aria-label="Закрыть уведомление">×</button></aside>
+  <dialog class="risk-modal" data-risk-modal aria-labelledby="risk-title">
+    <div class="risk-modal-head"><span>Quant Hill · Risk disclosure</span><button type="button" data-risk-close aria-label="Закрыть">×</button></div>
+    <h2 id="risk-title">Инвестиции связаны с риском.</h2>
+    <p>Целевые показатели доходности и волатильности являются ориентирами, а не обещанием результата. Стоимость цифровых активов может как увеличиваться, так и снижаться, а фактическая просадка может превысить исторические значения.</p>
+    <p>До принятия решения инвестору следует оценить собственный горизонт, допустимый уровень риска, условия договора и риски выбранной торговой площадки. Материалы сайта не являются индивидуальной инвестиционной рекомендацией.</p>
+    <button type="button" class="risk-confirm" data-risk-close>Понятно</button>
+  </dialog>
+</body>
+</html>

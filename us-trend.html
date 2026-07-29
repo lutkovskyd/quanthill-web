@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru" class="site-auth-pending">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="US Trend USD — алгоритмическая трендовая стратегия Quant Hill для рынка акций США. Системный отбор, автоматическое исполнение и контроль риска на отдельном счёте клиента.">
+  <meta name="theme-color" content="#062f68">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta property="og:title" content="US Trend USD — Quant Hill">
+  <meta property="og:description" content="Трендовая стратегия для долгосрочного роста капитала на рынке акций США с автоматическим исполнением и встроенным риск-профилем.">
+  <meta property="og:type" content="website">
+  <title>US Trend USD — Quant Hill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="./accets/css2" rel="stylesheet">
+  <link rel="stylesheet" href="./accets/institutional.css?v=20260727-dropdown-2">
+  <link rel="stylesheet" href="./accets/crypto-trend.css?v=20260727-hero-title-1">
+  <link rel="stylesheet" href="./accets/us-trend.css?v=20260726-1">
+  <script src="./accets/nav-dropdown.js?v=20260727-3" defer></script>
+  <script src="./accets/us-trend.js?v=20260726-a11y-2" defer></script>
+  <link rel="stylesheet" href="./accets/site-auth.css?v=20260729-2">
+  <script src="./accets/site-auth.js?v=20260729-2"></script>
+</head>
+<body class="strategy-page us-trend-page">
+  <a class="skip" href="#main">К содержанию</a>
+  <div class="progress" aria-hidden="true"><i></i></div>
+
+  <header class="header" data-header>
+    <a href="./index.html" class="logo" aria-label="Quant Hill — главная"><img src="./accets/logo-quanthill.svg" width="241" height="63" alt="Quant Hill"></a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="./about.html">О компании</a>
+      <div class="nav-dropdown" data-nav-dropdown>
+        <div class="nav-dropdown-label">
+          <a href="./strategies.html" class="is-active">Стратегии</a>
+          <button class="nav-dropdown-toggle" type="button" aria-label="Показать меню раздела «Стратегии»" aria-expanded="false" aria-controls="strategies-submenu" data-nav-dropdown-toggle><i aria-hidden="true"></i></button>
+        </div>
+        <div class="nav-dropdown-menu" id="strategies-submenu" aria-hidden="true" data-nav-dropdown-menu>
+          <a href="./strategies.html"><span><b>Все стратегии</b><small>Обзор и сравнение</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./crypto-trend.html"><span><b>Crypto Trend</b><small>Digital assets · USDT</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./bitcoin-hedge.html"><span><b>Bitcoin Hedge</b><small>Digital assets · BTC</small></span><i aria-hidden="true">↗</i></a>
+          <a href="#top" aria-current="page"><span><b>US Trend</b><small>US equities · USD</small></span><i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+      <a href="./technologies.html">Технологии</a>
+      <a href="./blog/index.html">Блог и новости</a>
+      <a href="./contacts.html">Контакты</a>
+    </nav>
+    <div class="head-actions">
+      <a href="https://quanthill.kg/en/" class="lang">EN</a>
+      <a href="#contact" class="contact-link">Личный кабинет</a>
+      <button class="menu" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu><i></i><i></i></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="strategy-hero" id="top" aria-labelledby="strategy-title">
+      <div class="strategy-hero-atmosphere" aria-hidden="true"><i></i><i></i></div>
+      <div class="strategy-hero-inner">
+        <div class="strategy-hero-layout">
+          <div class="strategy-hero-copy">
+            <nav class="breadcrumbs" aria-label="Хлебные крошки"><a href="./index.html">Главная</a><span>/</span><a href="./strategies.html">Стратегии</a><span>/</span><b>US Trend</b></nav>
+            <h1 id="strategy-title">US <em>Trend</em><sup>USD</sup></h1>
+            <p class="strategy-hero-lead">Системная трендовая стратегия для долгосрочного роста капитала на рынке акций США. Алгоритм отбирает устойчивые движения, рассчитывает риск портфеля и автоматически исполняет сделки.</p>
+            <div class="strategy-hero-actions">
+              <button type="button" class="hero-button hero-button-primary" data-contact-open><span>Запросить консультацию</span><b aria-hidden="true">↗</b></button>
+              <a class="hero-button hero-button-secondary" href="#results"><span>Посмотреть результаты</span><b aria-hidden="true">↓</b></a>
+            </div>
+          </div>
+
+          <div class="market-visual us-market-visual" data-us-visual tabindex="0" role="img" aria-label="Интерактивная системная модель US Trend: алгоритм анализирует рынок акций США, подтверждает тренд, рассчитывает размер позиции и исполняет заявку">
+            <svg class="market-canvas" viewBox="0 0 620 350" aria-hidden="true">
+              <defs>
+                <linearGradient id="us-zone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#75b4ff" stop-opacity=".16"/><stop offset="1" stop-color="#75b4ff" stop-opacity="0"/></linearGradient>
+                <radialGradient id="us-grid-fade"><stop offset="38%" stop-color="#fff" stop-opacity="1"/><stop offset="100%" stop-color="#fff" stop-opacity="0"/></radialGradient>
+                <filter id="us-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <clipPath id="us-clip"><rect x="28" y="30" width="564" height="270"/></clipPath>
+                <mask id="us-grid-mask"><rect width="620" height="320" fill="url(#us-grid-fade)"/></mask>
+              </defs>
+              <g class="market-grid" mask="url(#us-grid-mask)">
+                <path d="M28 62H592M28 112H592M28 162H592M28 212H592M28 262H592M28 300H592"/>
+                <path d="M84 30V300M168 30V300M252 30V300M336 30V300M420 30V300M504 30V300"/>
+              </g>
+              <g clip-path="url(#us-clip)">
+                <path class="us-market-zone" data-us-zone fill="url(#us-zone)"/>
+                <g class="market-volume" data-us-volume></g>
+                <g class="market-candles" data-us-candles></g>
+                <path class="us-trend-line" data-us-line pathLength="1" filter="url(#us-glow)"/>
+                <line class="us-risk-line" data-us-risk-line x1="28" y1="245" x2="592" y2="245"/>
+                <g class="market-crosshair" aria-hidden="true">
+                  <line data-us-cross-x x1="28" y1="170" x2="592" y2="170"/>
+                  <line data-us-cross-y x1="310" y1="30" x2="310" y2="300"/>
+                  <circle data-us-point cx="310" cy="170" r="4"/>
+                </g>
+              </g>
+              <g class="us-model-axis">
+                <path d="M48 327H572"/>
+                <g data-us-stage="universe" transform="translate(48 327)"><circle r="3"/><text y="17">UNIVERSE</text></g>
+                <g data-us-stage="trend" transform="translate(220 327)"><circle r="3"/><text y="17">TREND</text></g>
+                <g data-us-stage="size" transform="translate(392 327)"><circle r="3"/><text y="17">SIZE</text></g>
+                <g data-us-stage="order" transform="translate(572 327)"><circle r="3"/><text y="17" text-anchor="end">ORDER</text></g>
+              </g>
+            </svg>
+            <div class="us-readout" aria-hidden="true"><span>NYSE / NASDAQ · MODEL</span><strong data-us-state>ORDER READY</strong><small><b data-us-session>SESSION</b> · risk controlled</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="strategy-hero-stats" aria-label="Ключевые показатели стратегии">
+        <div><span>Чистая целевая доходность</span><strong><em>20.0</em>%</strong><small>в год, целевой ориентир</small></div>
+        <div><span>Gross CAGR</span><strong><em>26.0</em>%</strong><small>расчётный исторический показатель</small></div>
+        <div><span>Max drawdown</span><strong>−<em>21.5</em>%</strong><small>расчётный исторический показатель</small></div>
+        <div><span>Реальная торговля</span><strong><em>03.2025</em></strong><small>старт на счёте клиента</small></div>
+      </div>
+    </section>
+
+    <section class="strategy-intro pad" id="overview">
+      <p class="section-id reveal">01 / О стратегии</p>
+      <div class="strategy-intro-copy reveal">
+        <p class="overline">US equities · systematic trend</p>
+        <h2>Следовать за трендом.<br><span>Не за новостным шумом.</span></h2>
+        <div class="strategy-intro-text">
+          <p>US Trend — трендовая алгоритмическая стратегия для рынка акций США. Её цель — долгосрочный рост капитала в USD через системное участие в устойчивых направленных движениях.</p>
+          <p>Стратегия разработана в 2024 году. Торговые решения полностью автоматизированы, а риск ограничивается до отправки заявки — на уровне отдельной позиции и портфеля целиком.</p>
+        </div>
+      </div>
+      <div class="strategy-principles">
+        <article class="principle reveal"><span>01</span><div class="principle-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M10 49h44M14 43l10-9 9 5 17-21"/><path d="M40 18h10v10"/></svg></div><h3>Находить устойчивый тренд</h3><p>Модель оценивает направление и качество движения по единым количественным правилам.</p></article>
+        <article class="principle reveal"><span>02</span><div class="principle-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M11 45V29M22 45V20M33 45V34M44 45V14M55 45V25"/><path d="M8 50h50"/></svg></div><h3>Распределять позиции</h3><p>Капитал направляется в отобранные рыночные движения с учётом ликвидности и риска портфеля.</p></article>
+        <article class="principle principle-accent reveal"><span>03</span><div class="principle-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M32 8l20 8v14c0 13-8 22-20 27C20 52 12 43 12 30V16z"/><path d="M22 32l7 7 14-16"/></svg></div><h3>Ограничивать риск заранее</h3><p>Размер позиции и совокупный риск проверяются до исполнения, а не после движения рынка.</p></article>
+      </div>
+    </section>
+
+    <section class="us-framework pad" id="logic" aria-labelledby="us-framework-title">
+      <p class="section-id reveal">Логика стратегии</p>
+      <div class="us-framework-body">
+        <div class="us-framework-head">
+          <div class="reveal"><p class="overline">One market · one risk framework</p><h2 id="us-framework-title">Широкий рынок США.<br><em>Системный отбор позиций.</em></h2></div>
+          <p class="reveal">Алгоритм последовательно проходит от доступного торгового универсума к подтверждённому сигналу, размеру позиции и автоматическому исполнению на отдельном счёте клиента.</p>
+        </div>
+        <div class="us-framework-grid">
+          <article class="reveal"><span>01 / MARKET</span><strong>USD</strong><h3>Акции США</h3><p>Стратегия работает на ликвидном фондовом рынке и оценивает результат в долларах США.</p></article>
+          <article class="reveal"><span>02 / RESEARCH</span><strong>2000</strong><h3>Глубина тестов</h3><p>Торговая логика исследована на исторических данных, начиная с 2000 года.</p></article>
+          <article class="reveal"><span>03 / LIVE</span><strong>03.25</strong><h3>Реальный счёт</h3><p>Торговля на реальном счёте клиента началась в марте 2025 года.</p></article>
+          <article class="reveal"><span>04 / CONTROL</span><strong>API</strong><h3>Раздельное хранение</h3><p>Средства остаются у брокера, а подключение не предоставляет Quant Hill права вывода.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="engine" id="method">
+      <div class="engine-copy">
+        <p class="section-id reveal">02 / Как работает</p>
+        <h2 class="reveal">От рынка акций<br>до заявки — <em>один алгоритм.</em></h2>
+        <p class="engine-lead reveal">Собственное программное обеспечение объединяет подготовку данных, оценку тренда, расчёт риска и исполнение в единый контролируемый процесс.</p>
+        <div class="engine-steps">
+          <article class="reveal"><span>01</span><div><h3>Универсум</h3><p>Система обновляет данные по доступным ликвидным акциям и проверяет качество входной информации.</p></div><i>SCAN</i></article>
+          <article class="reveal"><span>02</span><div><h3>Тренд</h3><p>Количественная модель оценивает направление, устойчивость и пригодность движения для сделки.</p></div><i>RANK</i></article>
+          <article class="reveal"><span>03</span><div><h3>Размер</h3><p>До заявки рассчитываются риск позиции, совокупная нагрузка и допустимый размер капитала.</p></div><i>SIZE</i></article>
+          <article class="reveal"><span>04</span><div><h3>Исполнение</h3><p>Заявка направляется брокеру автоматически, а открытые позиции остаются под мониторингом.</p></div><i>ORDER</i></article>
+        </div>
+      </div>
+      <aside class="account-card reveal" aria-label="Контур отдельного брокерского счёта">
+        <div class="account-card-top"><span>Separately managed account</span><strong>Активы остаются<br>на счёте клиента.</strong></div>
+        <div class="account-diagram" aria-hidden="true">
+          <div class="account-client"><span>Client</span><b>USD</b><small>брокерский счёт</small></div>
+          <div class="account-api"><span>API</span><i></i><small>просмотр + торговля</small></div>
+          <div class="account-core"><span>QH</span><b>CORE</b><small>без права вывода</small></div>
+        </div>
+        <dl class="account-list">
+          <div><dt>Брокеры</dt><dd>Freedom Finance Armenia · TFOS · Interactive Brokers</dd></div>
+          <div><dt>Договор</dt><dd>Официальный договор с ОсОО «Квант Хилл»</dd></div>
+          <div><dt>Доступ</dt><dd>Только просмотр и торговля — без права вывода средств</dd></div>
+        </dl>
+      </aside>
+    </section>
+
+    <section class="results pad" id="results">
+      <div class="results-head">
+        <p class="section-id reveal">03 / Результаты</p>
+        <div class="reveal"><p class="overline">Back-test from 2000 · live since 03.2025</p><h2><span class="results-line">Доходность видна.</span><br><span>Риск — рядом.</span></h2></div>
+        <p class="results-intro reveal">Исторические тесты торговой логики проводились с 2000 года. График ниже показывает расчётную накопленную доходность с января 2015 года; торговля на реальном счёте началась в марте 2025 года.</p>
+      </div>
+
+      <div class="growth-panel reveal">
+        <div class="growth-chart">
+          <div class="growth-chart-head">
+            <div><span>Накопленная доходность</span><strong>с 01.2015</strong></div>
+            <div class="growth-legend" aria-label="Легенда графика"><p><i></i>US Trend</p><p><i class="is-benchmark"></i>SPY</p></div>
+          </div>
+          <svg viewBox="0 0 940 430" role="img" aria-labelledby="growth-title growth-desc" data-growth-svg data-series-label="US Trend" data-start-year="2016" data-annual-returns="41.9,41.4,16.1,41.3,37.0,37.5,-7.3,32.5,46.9,0.9,0.7">
+            <title id="growth-title">Расчётная накопленная доходность US Trend и SPY</title>
+            <desc id="growth-desc">Синяя линия показывает модельную накопленную доходность US Trend, зелёная линия — динамику SPY в масштабе графика.</desc>
+            <defs><linearGradient id="us-growth-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c56c3" stop-opacity=".24"/><stop offset="1" stop-color="#0c56c3" stop-opacity="0"/></linearGradient><clipPath id="us-growth-reveal-clip"><rect class="growth-reveal-rect" x="72" y="40" width="828" height="320"/></clipPath></defs>
+            <g class="chart-grid"><path d="M72 350H900M72 275H900M72 200H900M72 125H900M72 50H900"/></g>
+            <g class="chart-y"><text x="54" y="354">0%</text><text x="54" y="279">300%</text><text x="54" y="204">600%</text><text x="54" y="129">900%</text><text x="54" y="54">1 200%</text></g>
+            <g clip-path="url(#us-growth-reveal-clip)"><path class="growth-area" fill="url(#us-growth-area)" d="M84 339.5L164 324.8L244 316.8L324 292.7L404 262.3L484 220L564 231.3L644 184.6L724 95.3L804 92.8L884 90.8L884 350L84 350Z"/></g>
+            <path class="benchmark-line us-benchmark-line" d="M84 347L164 341L244 342.5L324 332L404 324.5L484 310L564 322L644 308L724 291L804 290.5L884 285" pathLength="1"/>
+            <path class="growth-line" data-growth-series="strategy" d="M84 339.5L164 324.8L244 316.8L324 292.7L404 262.3L484 220L564 231.3L644 184.6L724 95.3L804 92.8L884 90.8" pathLength="1"/>
+            <circle class="year-point-highlight" data-year-point-highlight cx="84" cy="339.5" r="11" aria-hidden="true"/>
+            <g class="chart-points"><circle data-growth-year="2016" cx="84" cy="339.5" r="4"/><circle data-growth-year="2017" cx="164" cy="324.8" r="4"/><circle data-growth-year="2018" cx="244" cy="316.8" r="4"/><circle data-growth-year="2019" cx="324" cy="292.7" r="4"/><circle data-growth-year="2020" cx="404" cy="262.3" r="4"/><circle data-growth-year="2021" cx="484" cy="220" r="4"/><circle data-growth-year="2022" cx="564" cy="231.3" r="4"/><circle data-growth-year="2023" cx="644" cy="184.6" r="4"/><circle data-growth-year="2024" cx="724" cy="95.3" r="4"/><circle data-growth-year="2025" cx="804" cy="92.8" r="4"/><circle data-growth-year="2026" cx="884" cy="90.8" r="5"/></g>
+            <g class="growth-hover-marker" data-growth-marker aria-hidden="true"><line data-growth-guide x1="84" y1="50" x2="84" y2="350"/><circle class="growth-hover-halo" data-growth-halo cx="84" cy="350" r="10"/><circle class="growth-hover-dot" data-growth-dot cx="84" cy="350" r="4"/></g>
+            <g class="chart-x"><text x="84" y="385">2016</text><text x="164" y="385">2017</text><text x="244" y="385">2018</text><text x="324" y="385">2019</text><text x="404" y="385">2020</text><text x="484" y="385">2021</text><text x="564" y="385">2022</text><text x="644" y="385">2023</text><text x="724" y="385">2024</text><text x="804" y="385">2025</text><text x="884" y="385">2026</text></g>
+          </svg>
+          <div class="growth-tooltip" data-growth-tooltip aria-hidden="true" aria-live="polite"><span data-growth-tooltip-label>US Trend</span><strong data-growth-tooltip-value>+0,0%</strong><small data-growth-tooltip-date>2016</small></div>
+          <p class="growth-note">Модельная кривая построена по годовым результатам продуктового среза. Показатели до марта 2025 года относятся к историческому тестированию; 2026 — YTD на дату материала.</p>
+        </div>
+        <div class="year-returns">
+          <div class="year-returns-head"><span>Год</span><span>Доходность</span></div>
+          <div data-growth-year-row="2016"><span>2016</span><strong>41.9%</strong></div>
+          <div data-growth-year-row="2017"><span>2017</span><strong>41.4%</strong></div>
+          <div data-growth-year-row="2018"><span>2018</span><strong>16.1%</strong></div>
+          <div data-growth-year-row="2019"><span>2019</span><strong>41.3%</strong></div>
+          <div data-growth-year-row="2020"><span>2020</span><strong>37.0%</strong></div>
+          <div data-growth-year-row="2021"><span>2021</span><strong>37.5%</strong></div>
+          <div class="negative" data-growth-year-row="2022"><span>2022</span><strong>−7.3%</strong></div>
+          <div data-growth-year-row="2023"><span>2023</span><strong>32.5%</strong></div>
+          <div data-growth-year-row="2024"><span>2024</span><strong>46.9%</strong></div>
+          <div data-growth-year-row="2025"><span>2025</span><strong>0.9%</strong></div>
+          <div data-growth-year-row="2026"><span>2026 <small>YTD</small></span><strong>0.7%</strong></div>
+        </div>
+      </div>
+
+      <div class="metrics-block">
+        <div class="metrics-copy reveal"><p class="overline">Risk-adjusted comparison</p><h3>Обгонять индекс — цель.<br><em>Риск должен быть виден.</em></h3><p>Сопоставление со SPY показывает не только темп роста, но и отрицательную волатильность, максимальную просадку и эффективность принимаемого риска.</p></div>
+        <div class="metrics-table reveal" role="table" aria-label="Сравнение показателей US Trend и SPY">
+          <div class="metrics-row metrics-header" role="row"><span role="columnheader">Метрика</span><strong role="columnheader">US Trend</strong><b role="columnheader">SPY</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Среднегодовой темп роста, gross</span><strong role="cell">26.04%</strong><b role="cell">13.16%</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Средняя отрицательная волатильность</span><strong role="cell">10.33%</strong><b role="cell">8.65%</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Коэффициент Шарпа</span><strong role="cell">0.78</strong><b role="cell">0.57</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Коэффициент Кальмара</span><strong role="cell">1.00</strong><b role="cell">0.35</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Коэффициент Сортино</span><strong role="cell">2.08</strong><b role="cell">1.00</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Максимальная просадка</span><strong role="cell">−21.47%</strong><b role="cell">−24.80%</b></div>
+          <div class="metrics-row" role="row"><span role="cell">Коэффициент β</span><strong role="cell">0.88</strong><b role="cell">1.00</b></div>
+        </div>
+      </div>
+      <p class="results-disclaimer">Историческое тестирование, фактические результаты и целевые ориентиры не гарантируют будущую доходность. Gross-показатели приведены до удержания комиссий. Фактический результат зависит от момента подключения, параметров счёта, брокерских комиссий и рыночных условий.</p>
+    </section>
+
+    <section class="fit-section" aria-labelledby="fit-title">
+      <div class="fit-title reveal"><p class="section-id">04 / Инвестору</p><h2 id="fit-title">Подходит ли вам<br><em>US Trend?</em></h2><p>Стратегия рассчитана на инвестора, который принимает рыночный риск и оценивает результат на горизонте полного цикла.</p></div>
+      <div class="fit-columns">
+        <div class="fit-column fit-yes reveal"><span>Подходит, если</span><ul><li>вы планируете инвестировать в USD не менее двух лет;</li><li>хотите системно участвовать в трендах рынка акций США;</li><li>понимаете возможность временной просадки;</li><li>готовы оценивать результат относительно риска и SPY.</li></ul></div>
+        <div class="fit-column reveal"><span>Не подходит, если</span><ul><li>вам нужна гарантия капитала или фиксированная доходность;</li><li>средства могут понадобиться в ближайшие месяцы;</li><li>временная отрицательная доходность неприемлема;</li><li>вы не готовы к рискам фондового рынка и отдельного брокера.</li></ul></div>
+      </div>
+    </section>
+
+    <section class="terms pad" id="terms">
+      <div class="terms-head"><p class="section-id reveal">05 / Условия</p><div class="reveal"><p class="overline">Clear before launch</p><h2>Все ключевые условия —<br><span>до подключения.</span></h2></div></div>
+      <div class="terms-grid">
+        <article class="term-card term-main reveal"><span>Минимальная сумма</span><strong>$100k</strong><p>На отдельном брокерском счёте клиента в USD.</p></article>
+        <article class="term-card reveal"><span>Горизонт</span><strong>2+ <small>года</small></strong><p>Оптимальный срок для прохождения разных фаз рынка.</p></article>
+        <article class="term-card reveal"><span>Management fee</span><strong>2%</strong><p>Комиссия за управление. Расчёт комиссий — раз в квартал.</p></article>
+        <article class="term-card reveal"><span>Success fee</span><strong>30%</strong><p>Комиссия за результат применяется с учётом High Water Mark.</p></article>
+        <article class="term-card term-blue reveal"><span>Формат</span><strong>API</strong><p>Только просмотр и торговля. Без права вывода средств со счёта.</p></article>
+      </div>
+      <div class="launch-flow">
+        <div class="launch-flow-head reveal"><p class="overline">Launch process</p><h3>От первого разговора<br><span>до запуска стратегии.</span></h3></div>
+        <ol>
+          <li class="reveal"><span>01</span><div><strong>Знакомство</strong><p>Сверяем задачу, горизонт и допустимый риск.</p></div></li>
+          <li class="reveal"><span>02</span><div><strong>Счёт</strong><p>Вы выбираете брокера и проходите необходимые процедуры.</p></div></li>
+          <li class="reveal"><span>03</span><div><strong>Договор и API</strong><p>Фиксируем условия и подключаем права просмотра и торговли.</p></div></li>
+          <li class="reveal"><span>04</span><div><strong>Запуск</strong><p>Стратегия начинает работать в согласованном риск-профиле.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="faq pad" id="faq" aria-labelledby="faq-title">
+      <div class="faq-head"><p class="section-id reveal">06 / FAQ</p><h2 class="reveal" id="faq-title">Коротко о важном</h2></div>
+      <div class="faq-list strategy-faq-list">
+        <details class="reveal"><summary><span>01</span>Чем US Trend отличается от пассивной покупки SPY?<i></i></summary><p>SPY пассивно повторяет индекс S&amp;P 500. US Trend использует алгоритмические правила для отбора направленных движений, расчёта позиций и контроля риска. Это активная стратегия, поэтому её результат может как опережать, так и отставать от индекса.</p></details>
+        <details class="reveal"><summary><span>02</span>Какие результаты являются реальными?<i></i></summary><p>Исторические тесты торговой логики проводились на данных с 2000 года, а показанная кривая рассчитана с января 2015 года. Торговля на реальном счёте клиента началась в марте 2025 года. Эти периоды намеренно разделены на странице.</p></details>
+        <details class="reveal"><summary><span>03</span>Где хранятся средства инвестора?<i></i></summary><p>Активы находятся на личном брокерском счёте инвестора. Quant Hill подключается по API только для просмотра и торговли — без права вывода средств.</p></details>
+        <details class="reveal"><summary><span>04</span>Гарантируется ли целевая доходность 20%?<i></i></summary><p>Нет. Это целевой ориентир, а не обещание результата. Фактическая доходность зависит от рыночных условий, момента подключения, параметров риска, комиссий и характеристик брокерского счёта.</p></details>
+        <details class="reveal"><summary><span>05</span>Почему рекомендуемый горизонт — от двух лет?<i></i></summary><p>Трендовая стратегия проходит периоды направленного и бокового рынка, а также временные просадки. Более длинный горизонт снижает влияние отдельной рыночной фазы на оценку результата.</p></details>
+        <details class="reveal"><summary><span>06</span>Как рассчитываются комиссии?<i></i></summary><p>Management fee составляет 2%, success fee — 30% от нового финансового результата с учётом High Water Mark. Расчёт комиссий проводится раз в квартал согласно условиям договора.</p></details>
+      </div>
+    </section>
+
+    <section class="related-strategies pad" aria-label="Другие стратегии Quant Hill">
+      <div class="related-strategies-grid">
+        <a class="related-strategy reveal" href="./crypto-trend.html"><h2>Стратегия <span>Crypto Trend</span></h2><p>Активная трендовая стратегия для роста капитала в USDT</p><span>Узнать больше <i aria-hidden="true">↗</i></span></a>
+        <a class="related-strategy reveal" href="./bitcoin-hedge.html"><h2>Стратегия <span class="related-strategy-name-block">Bitcoin Hedge</span></h2><p>Трендовая стратегия для увеличения количества Bitcoin</p><span>Узнать больше <i aria-hidden="true">↗</i></span></a>
+      </div>
+    </section>
+
+    <section class="contact about-contact" id="contact">
+      <p class="about-contact-kicker reveal" data-header-hide>Контакты</p>
+      <div class="about-contact-layout">
+        <div class="about-contact-copy"><h2 class="reveal">Обсудим<br> <em>вашу задачу.</em></h2><div class="contact-top reveal"><button type="button" class="contact-open cta-motion" data-contact-open><span>Написать нам</span><b aria-hidden="true">↗</b></button></div></div>
+        <div class="contact-bottom reveal">
+          <div><span>Телефон</span><a href="tel:+996888888031">+996 888 888 031</a></div>
+          <div><span>Email</span><a href="mailto:info@quanthill.kg">info@quanthill.kg</a></div>
+          <div><span>Адрес</span><p>720040, Бишкек, ул. Исхака Раззакова, 19, офис 605</p></div>
+          <div><span>Telegram</span><a href="https://t.me/quanthillpublic" target="_blank" rel="noopener">@quanthillpublic <i aria-hidden="true">↗</i></a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer about-footer">
+    <div class="footer-main"><a href="#top" class="footer-logo" aria-label="Quant Hill — наверх"><img src="./accets/logo-quanthill.svg" width="241" height="63" alt="Quant Hill"></a><nav class="footer-nav" aria-label="Навигация в подвале"><a href="./about.html">О компании</a><a href="./strategies.html">Стратегии</a><a href="./technologies.html">Технологии</a><a href="./blog/index.html">Блог и новости</a><a href="./contacts.html">Контакты</a></nav></div>
+    <div class="footer-legal"><p>Размещённая на сайте информация носит исключительно ознакомительный характер и не является офертой, инвестиционной рекомендацией или финансовой консультацией. Инвестирование связано с высокими рисками, включая риск полной потери капитала. Исторические результаты не являются показателем будущей доходности.</p><div><p>© 2014–2026 Quant Hill · ОсОО «Квант Хилл»<br>Все права защищены</p><button type="button" data-risk-open>Раскрытие рисков</button></div></div>
+  </footer>
+
+  <dialog class="contact-modal" data-contact-modal aria-labelledby="contact-form-title">
+    <div class="contact-modal-head"><span>Quant Hill · US Trend</span><button type="button" data-contact-close aria-label="Закрыть">×</button></div>
+    <form class="contact-form" data-contact-form>
+      <h2 id="contact-form-title">Обсудить US Trend.</h2>
+      <p>Оставьте контактные данные. Менеджер свяжется с вами, чтобы обсудить задачу, горизонт и параметры риска.</p>
+      <label><span>Имя</span><input type="text" name="name" autocomplete="name" required></label>
+      <label><span>Телефон или email</span><input type="text" name="contact" autocomplete="email" required></label>
+      <label><span>Комментарий</span><textarea name="message" rows="4" placeholder="Например: сумма, брокер, удобное время"></textarea></label>
+      <label class="contact-consent"><input type="checkbox" required><span>Я согласен на обработку данных для обратной связи.</span></label>
+      <button type="submit" class="contact-submit"><span>Отправить запрос</span><b aria-hidden="true">↗</b></button>
+    </form>
+  </dialog>
+
+  <aside class="risk-toast" data-risk-toast aria-label="Важная информация о рисках"><div><span>Информация для инвесторов</span><p>Доходность в прошлом не гарантирует результатов в будущем.</p></div><button type="button" class="risk-more" data-risk-open>Подробнее</button><button type="button" class="risk-dismiss" data-risk-dismiss aria-label="Закрыть уведомление">×</button></aside>
+  <dialog class="risk-modal" data-risk-modal aria-labelledby="risk-title">
+    <div class="risk-modal-head"><span>Quant Hill · Risk disclosure</span><button type="button" data-risk-close aria-label="Закрыть">×</button></div>
+    <h2 id="risk-title">Инвестиции связаны с риском.</h2>
+    <p>Целевые показатели доходности и волатильности являются ориентирами, а не обещанием результата. Стоимость акций может как увеличиваться, так и снижаться, а фактическая просадка может превысить расчётные и исторические значения.</p>
+    <p>До принятия решения инвестору следует оценить собственный горизонт, допустимый уровень риска, условия договора и риски выбранного брокера. Материалы сайта не являются индивидуальной инвестиционной рекомендацией.</p>
+    <button type="button" class="risk-confirm" data-risk-close>Понятно</button>
+  </dialog>
+</body>
+</html>

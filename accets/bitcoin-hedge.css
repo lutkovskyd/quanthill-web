@@ -1,0 +1,309 @@
+.bitcoin-hedge-page .strategy-hero h1 {
+  font-size: clamp(56px, 5.35vw, 84px);
+}
+
+.bitcoin-hedge-page .strategy-hero h1 em {
+  color: #8fc0ff;
+}
+
+.bitcoin-hedge-page .market-zone {
+  fill: url(#hedge-zone);
+}
+
+.hedge-market-visual {
+  padding-top: 15px;
+}
+
+.hedge-market-visual::before {
+  content: "BTC / SYSTEM MODEL";
+  position: absolute;
+  top: 0;
+  left: 28px;
+  color: rgba(255,255,255,.5);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+
+.hedge-exposure-line {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: .78;
+  animation: marketTrace 2.25s .55s cubic-bezier(.2,.75,.2,1) forwards;
+}
+
+.hedge-market-visual .market-candle.is-up {
+  color: #76b7ff;
+}
+
+.hedge-market-visual .market-candle.is-down {
+  color: rgba(255,255,255,.72);
+}
+
+.hedge-market-visual .market-candle.is-hedged {
+  color: #f0bf55;
+}
+
+.hedge-market-visual .market-candle.is-focus {
+  color: #fff;
+  filter: drop-shadow(0 0 8px rgba(143,192,255,.95));
+}
+
+.hedge-market-visual .market-volume rect {
+  fill: rgba(143,192,255,.12);
+}
+
+.hedge-regime-axis text {
+  fill: rgba(255,255,255,.52);
+  font: 700 9px var(--body);
+  letter-spacing: .12em;
+}
+
+.hedge-regime-axis line {
+  stroke: rgba(255,255,255,.17);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+}
+
+.hedge-readout {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  min-width: 128px;
+  padding: 12px 14px 11px;
+  color: #fff;
+  border: 1px solid rgba(143,192,255,.28);
+  background: rgba(3,31,68,.72);
+  box-shadow: 0 15px 32px rgba(0,0,0,.14);
+  backdrop-filter: blur(10px);
+  transition: border-color .2s, transform .2s;
+}
+
+.hedge-market-visual.is-interacting .hedge-readout {
+  border-color: rgba(143,192,255,.68);
+  transform: translateY(-2px);
+}
+
+.hedge-readout span,
+.hedge-readout small {
+  display: block;
+  color: rgba(255,255,255,.56);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.hedge-readout span b {
+  color: #fff;
+  font: inherit;
+}
+
+.hedge-readout strong {
+  display: block;
+  margin: 6px 0 5px;
+  color: #a8caff;
+  font: 500 19px var(--serif);
+  letter-spacing: -.02em;
+}
+
+.hedge-logic {
+  display: grid;
+  grid-template-columns: 18% minmax(0,1fr);
+  gap: 0 7vw;
+  align-items: start;
+  background: #f3f7fc;
+}
+
+.hedge-logic-body {
+  min-width: 0;
+}
+
+.hedge-logic-head {
+  display: grid;
+  grid-template-columns: minmax(0,1.18fr) minmax(280px,.62fr);
+  gap: clamp(42px, 6vw, 92px);
+  align-items: end;
+}
+
+.hedge-logic-head .overline {
+  margin-bottom: 22px;
+}
+
+.hedge-logic-head h2 {
+  margin: 0;
+  font: 500 clamp(40px, 3.7vw, 60px)/1.05 var(--serif);
+  letter-spacing: -.04em;
+}
+
+.hedge-logic-head h2 em {
+  display: block;
+  color: var(--blue);
+  font-style: normal;
+}
+
+.hedge-logic-head > p {
+  max-width: 48ch;
+  margin: 0 0 4px;
+  color: var(--steel);
+  font-size: clamp(14px, 1.05vw, 16px);
+  line-height: 1.72;
+}
+
+.hedge-logic-grid {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  margin-top: clamp(62px, 7vw, 102px);
+  border-top: 1px solid #cbd8e7;
+  border-left: 1px solid #cbd8e7;
+}
+
+.hedge-logic-grid article {
+  min-height: 320px;
+  padding: 27px clamp(20px,2vw,30px) 31px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #cbd8e7;
+  border-bottom: 1px solid #cbd8e7;
+  background: rgba(255,255,255,.38);
+  transition: transform .32s cubic-bezier(.2,.75,.2,1), background-color .32s, box-shadow .32s;
+}
+
+.hedge-logic-grid article > span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
+.hedge-logic-grid article > strong {
+  margin: 54px 0 auto;
+  color: var(--blue-dark);
+  font: 500 clamp(38px,3.3vw,53px)/1 var(--serif);
+  letter-spacing: -.04em;
+}
+
+.hedge-logic-grid h3 {
+  margin: 36px 0 10px;
+  font: 500 20px var(--serif);
+}
+
+.hedge-logic-grid p {
+  margin: 0;
+  color: var(--steel);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.bitcoin-hedge-page .metrics-header strong {
+  white-space: nowrap;
+}
+
+@media (hover:hover) {
+  .hedge-logic-grid article:hover {
+    position: relative;
+    z-index: 1;
+    transform: translateY(-5px);
+    background: #fff;
+    box-shadow: 0 22px 46px rgba(6,47,104,.1);
+  }
+
+}
+
+@media (max-width:1180px) {
+  .bitcoin-hedge-page .strategy-hero h1 {
+    font-size: clamp(51px,5.3vw,72px);
+  }
+
+  .hedge-logic {
+    grid-template-columns: 15% minmax(0,1fr);
+    gap: 0 5vw;
+  }
+
+  .hedge-logic-head {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .hedge-logic-head > p {
+    max-width: 650px;
+  }
+
+  .hedge-logic-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media (max-width:760px) {
+  .bitcoin-hedge-page .strategy-hero h1 {
+    white-space: normal;
+    font-size: clamp(46px,13.2vw,57px);
+    line-height: .94;
+  }
+
+  .bitcoin-hedge-page .strategy-hero h1 em {
+    display: block;
+  }
+
+  .bitcoin-hedge-page .strategy-hero h1 sup {
+    top: auto;
+    right: -5px;
+    bottom: 2px;
+  }
+
+  .hedge-market-visual {
+    padding-top: 8px;
+  }
+
+  .hedge-market-visual::before {
+    left: 18px;
+  }
+
+  .hedge-readout {
+    top: 12px;
+    right: 10px;
+    min-width: 112px;
+    padding: 9px 11px;
+  }
+
+  .hedge-readout strong {
+    font-size: 17px;
+  }
+
+  .hedge-logic {
+    display: block;
+  }
+
+  .hedge-logic-body {
+    margin-top: 42px;
+  }
+
+  .hedge-logic-head h2 {
+    font-size: clamp(36px,10.8vw,50px);
+  }
+
+  .hedge-logic-grid {
+    grid-template-columns: 1fr;
+    margin-top: 50px;
+  }
+
+  .hedge-logic-grid article {
+    min-height: 245px;
+  }
+
+  .bitcoin-hedge-page .metrics-header strong {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .hedge-exposure-line {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
