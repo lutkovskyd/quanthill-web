@@ -15,10 +15,10 @@
   <link href="./accets/fonts.css" rel="stylesheet">
   <link rel="preload" href="./uploads/about-hero-european.webp" as="image" type="image/webp" fetchpriority="high">
   <link rel="stylesheet" href="./accets/institutional.css?v=20260727-dropdown-2">
-  <link rel="stylesheet" href="./accets/about.css?v=20260727-hero-image-3">
+  <link rel="stylesheet" href="./accets/about.css?v=20260729-license-1">
   <script src="./accets/nav-dropdown.js?v=20260727-3" defer></script>
   <script src="./accets/script.js?v=20260726-a11y-2" defer></script>
-  <script src="./accets/about.js?v=20260717-1" defer></script>
+  <script src="./accets/about.js?v=20260729-license-1" defer></script>
   <link rel="stylesheet" href="./accets/site-auth.css?v=20260729-2">
   <script src="./accets/site-auth.js?v=20260729-2"></script>
 </head>
@@ -92,7 +92,7 @@
         <div class="about-belief-content">
           <blockquote>Решение принимает система.<br>Ответственность остаётся за командой.</blockquote>
           <div class="about-belief-author">
-            <img src="./uploads/team/Игорь Шепелев.jpg" width="512" height="512" loading="lazy" decoding="async" alt="Игорь Шепелев">
+            <img src="./uploads/team/founder.jpg" width="512" height="512" loading="lazy" decoding="async" alt="Игорь Шепелев">
             <p><strong>Игорь Шепелев</strong><span>Основатель, CEO</span></p>
           </div>
         </div>
@@ -160,9 +160,9 @@
         <h2 id="documents-title" class="reveal" style="transition-delay: 0ms;">Три лицензии.<br> Одна <span class="keep-together">ответственность.</span></h2>
       </div>
       <div class="doc-list reveal" style="transition-delay: 55ms;">
-        <a href="https://quanthill-institutional.netlify.app/documents/license-trust-management.pdf" target="_blank" rel="noopener"><span>01</span><p>Доверительное управление инвестиционными активами</p><b>KG · RU · PDF ↗</b></a>
-        <a href="https://quanthill-institutional.netlify.app/documents/license-dealer.pdf" target="_blank" rel="noopener"><span>02</span><p>Дилерская деятельность на рынке ценных бумаг</p><b>KG · RU · PDF ↗</b></a>
-        <a href="https://quanthill-institutional.netlify.app/documents/license-broker.pdf" target="_blank" rel="noopener"><span>03</span><p>Брокерская деятельность на рынке ценных бумаг</p><b>KG · RU · PDF ↗</b></a>
+        <a href="./docs/license-trust-management.pdf" target="_blank" rel="noopener" data-license-open data-license-title="Доверительное управление инвестиционными активами" data-license-number="29" data-license-preview-kg="./docs/previews/license-trust-management-kg.webp" data-license-preview-ru="./docs/previews/license-trust-management-ru.webp" data-license-size="8,6 МБ"><span>01</span><p>Доверительное управление инвестиционными активами</p><b>KG · RU · PDF ↗</b></a>
+        <a href="./docs/license-dealer.pdf" target="_blank" rel="noopener" data-license-open data-license-title="Дилерская деятельность на рынке ценных бумаг" data-license-number="32" data-license-preview-kg="./docs/previews/license-dealer-kg.webp" data-license-preview-ru="./docs/previews/license-dealer-ru.webp" data-license-size="8,5 МБ"><span>02</span><p>Дилерская деятельность на рынке ценных бумаг</p><b>KG · RU · PDF ↗</b></a>
+        <a href="./docs/license-broker.pdf" target="_blank" rel="noopener" data-license-open data-license-title="Брокерская деятельность на рынке ценных бумаг" data-license-number="35" data-license-preview-kg="./docs/previews/license-broker-kg.webp" data-license-preview-ru="./docs/previews/license-broker-ru.webp" data-license-size="8,6 МБ"><span>03</span><p>Брокерская деятельность на рынке ценных бумаг</p><b>KG · RU · PDF ↗</b></a>
       </div>
     </section>
 
@@ -253,6 +253,38 @@
       <div><p>© 2014–2026 Quant Hill · ОсОО «Квант Хилл»<br>Все права защищены</p><button type="button" data-risk-open>Раскрытие рисков</button></div>
     </div>
   </footer>
+
+  <dialog class="license-modal" data-license-modal aria-labelledby="license-modal-title" aria-describedby="license-modal-description">
+    <div class="license-modal-shell">
+      <header class="license-modal-head">
+        <div>
+          <span>Quant Hill · Лицензия</span>
+          <h2 id="license-modal-title" data-license-modal-title>Лицензия</h2>
+          <p id="license-modal-description" data-license-modal-meta>Документ на кыргызском и русском языках.</p>
+        </div>
+        <button type="button" data-license-close aria-label="Закрыть окно">×</button>
+      </header>
+
+      <div class="license-tabs" role="tablist" aria-label="Язык документа">
+        <button type="button" id="license-tab-kg" role="tab" aria-selected="true" aria-controls="license-panel-kg" tabindex="0" data-license-tab="kg">Кыргызча</button>
+        <button type="button" id="license-tab-ru" role="tab" aria-selected="false" aria-controls="license-panel-ru" tabindex="-1" data-license-tab="ru">Русский</button>
+      </div>
+
+      <div class="license-modal-document">
+        <section id="license-panel-kg" role="tabpanel" aria-labelledby="license-tab-kg" data-license-panel="kg">
+          <img width="1164" height="1600" decoding="async" alt="" data-license-image="kg">
+        </section>
+        <section id="license-panel-ru" role="tabpanel" aria-labelledby="license-tab-ru" data-license-panel="ru" hidden>
+          <img width="1164" height="1600" decoding="async" alt="" data-license-image="ru">
+        </section>
+      </div>
+
+      <footer class="license-modal-actions">
+        <p>Облегчённое превью загружается только при просмотре выбранного языка.</p>
+        <a href="./docs/license-trust-management.pdf" download data-license-download>Скачать оригинал PDF <span data-license-download-size>8,6 МБ</span></a>
+      </footer>
+    </div>
+  </dialog>
 
   <dialog class="contact-modal" data-contact-modal aria-labelledby="contact-form-title">
     <div class="contact-modal-head"><span>Quant Hill · Contact</span><button type="button" data-contact-close aria-label="Закрыть">×</button></div>
