@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru" class="site-auth-pending">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (() => {
+      const base = document.createElement('base');
+      const pathRoot = location.pathname.split('/').filter(Boolean)[0];
+      base.href = location.protocol === 'file:' ? './' : location.hostname.endsWith('.github.io') && pathRoot ? `/${pathRoot}/` : '/';
+      document.head.append(base);
+    })();
+  </script>
+  <meta name="description" content="Запрошенная страница не найдена. Вернитесь на главную страницу Quant Hill или перейдите к обзору стратегий.">
+  <meta name="theme-color" content="#061f46">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>Страница не найдена — Quant Hill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" href="./favicon.ico" sizes="64x64" type="image/x-icon">
+  <link href="./accets/fonts.css" rel="stylesheet">
+  <link rel="stylesheet" href="./accets/institutional.css?v=20260727-dropdown-2">
+  <link rel="stylesheet" href="./accets/404.css?v=20260731-1">
+  <script src="./accets/nav-dropdown.js?v=20260727-3" defer></script>
+  <script src="./accets/script.js?v=20260726-a11y-2" defer></script>
+  <script src="./accets/404.js?v=20260731-1" defer></script>
+  <link rel="stylesheet" href="./accets/site-auth.css?v=20260729-2">
+  <script src="./accets/site-auth.js?v=20260729-2"></script>
+</head>
+<body class="error-page">
+  <a class="skip" href="#main">К содержанию</a>
+  <div class="progress" aria-hidden="true"><i></i></div>
+
+  <header class="header" data-header>
+    <a href="./index.html" class="logo" aria-label="Quant Hill — главная">
+      <img src="./accets/logo-quanthill.svg" width="241" height="63" alt="Quant Hill">
+    </a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="./about.html">О компании</a>
+      <div class="nav-dropdown" data-nav-dropdown>
+        <div class="nav-dropdown-label">
+          <a href="./strategies.html">Стратегии</a>
+          <button class="nav-dropdown-toggle" type="button" aria-label="Показать меню раздела «Стратегии»" aria-expanded="false" aria-controls="strategies-submenu" data-nav-dropdown-toggle><i aria-hidden="true"></i></button>
+        </div>
+        <div class="nav-dropdown-menu" id="strategies-submenu" aria-hidden="true" data-nav-dropdown-menu>
+          <a href="./strategies.html"><span><b>Все стратегии</b><small>Обзор и сравнение</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./crypto-trend.html"><span><b>Crypto Trend</b><small>Digital assets · USDT</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./bitcoin-hedge.html"><span><b>Bitcoin Hedge</b><small>Digital assets · BTC</small></span><i aria-hidden="true">↗</i></a>
+          <a href="./us-trend.html"><span><b>US Trend</b><small>US equities · USD</small></span><i aria-hidden="true">↗</i></a>
+        </div>
+      </div>
+      <a href="./technologies.html">Технологии</a>
+      <a href="./blog/index.html">Блог и новости</a>
+      <a href="./contacts.html">Контакты</a>
+    </nav>
+    <div class="head-actions">
+      <a href="./index.html" class="contact-link">На главную</a>
+      <button class="menu" type="button" aria-label="Открыть меню" aria-expanded="false" data-menu><i></i><i></i></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="error-hero" id="top" aria-labelledby="error-title">
+      <div class="error-layout">
+        <div class="error-copy">
+          <p class="error-kicker"><span>System / Route error</span><b>404</b></p>
+          <div class="error-code" aria-hidden="true">404</div>
+          <h1 id="error-title">Алгоритм не нашёл маршрут.</h1>
+          <p class="error-lead">Запрошенная страница не существует, была перемещена или адрес введён с ошибкой. Вернитесь к началу либо продолжите знакомство со стратегиями Quant Hill.</p>
+          <div class="error-actions">
+            <a class="error-button error-button-primary" href="./index.html"><span>Вернуться на главную</span><b aria-hidden="true">←</b></a>
+            <a class="error-button error-button-secondary" href="./strategies.html"><span>Открыть стратегии</span><b aria-hidden="true">↗</b></a>
+          </div>
+          <dl class="error-details">
+            <div><dt>Запрошенный путь</dt><dd><code data-error-path>/</code></dd></div>
+            <div><dt>Статус системы</dt><dd>Работает штатно</dd></div>
+            <div><dt>Ответ сервера</dt><dd>Not found</dd></div>
+          </dl>
+        </div>
+
+        <div class="error-monitor" aria-hidden="true">
+          <div class="error-monitor-head"><span>Route monitor · QH-404</span><b><i></i>No signal</b></div>
+          <div class="error-monitor-canvas">
+            <span class="error-axis error-axis-x"></span>
+            <span class="error-axis error-axis-y"></span>
+            <span class="error-chart-line error-chart-line-1"></span>
+            <span class="error-chart-line error-chart-line-2"></span>
+            <span class="error-chart-line error-chart-line-3"></span>
+            <span class="error-chart-line error-chart-line-4"></span>
+            <span class="error-chart-line error-chart-line-5"></span>
+            <span class="error-chart-line error-chart-line-6"></span>
+            <i class="error-chart-node error-chart-node-1"></i>
+            <i class="error-chart-node error-chart-node-2"></i>
+            <i class="error-chart-node error-chart-node-3"></i>
+            <i class="error-chart-node error-chart-node-4"></i>
+            <div class="error-gap"><span></span><b>Route lost</b><small>404</small></div>
+            <div class="error-scan"></div>
+          </div>
+          <div class="error-monitor-foot"><span>DATA STREAM / INTERRUPTED</span><span>UTC+06 · BISHKEK</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="error-footer" data-header-hide>
+    <p>© 2014–2026 Quant Hill · Системное управление капиталом</p>
+    <a href="mailto:info@quanthill.kg">info@quanthill.kg <span aria-hidden="true">↗</span></a>
+  </footer>
+</body>
+</html>
